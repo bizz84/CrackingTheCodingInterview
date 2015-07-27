@@ -1,3 +1,11 @@
+//
+//  Chapter2.swift
+//  CrackingCodeInterview
+//
+//  Created by Andrea Bizzotto on 20/07/2014.
+//  Copyright (c) 2014 musevisions. All rights reserved.
+//
+
 import Foundation
 
 class Node : Hashable, Equatable {
