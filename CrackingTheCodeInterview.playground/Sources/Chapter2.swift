@@ -41,12 +41,12 @@ func ==(lhs: Node, rhs: Node) -> Bool {
     return lhs === rhs
 }
 
-class Chapter2 {
-    
+public struct Chapter2_Exercise1 : ExerciseRunnable {
+
     // Write code to remove duplicates from an unsorted linked list
     // FOLLOW UP
     // How would you solve this problem if a temporary buffer is not allowed?
-    func exercise1(list : Node) {
+    static func exercise1(list : Node) {
         
         // Data, Original Index, Flagged
         var array : [(Int, Int, Bool)] = []
@@ -97,7 +97,7 @@ class Chapter2 {
         }
     }
     
-    func exercise1Hash(List : Node) {
+    static func exercise1Hash(List : Node) {
         var hash : [ Int : Bool ] = [:]
         var iter = List
         hash[iter.data] = true
@@ -119,7 +119,7 @@ class Chapter2 {
         }
     }
     
-    func testExercise1() {
+    static func testExercise1() {
         
         // 2, 4, 2, 1, 1, 3, 5 -> 2, 4, 1, 3, 5
         //        var list = Node(data: 2, next: Node(data: 4, next: Node(data: 2, next: Node(data: 1, next: Node(data: 1, next: Node(data: 3, next: Node(data: 5)))))))
@@ -137,9 +137,16 @@ class Chapter2 {
         // LEARNED: If a solution seems complex, always check if there is a simpler one! You can save 20 min of exercise with 2 min of analysis!
     }
     
+    public static func run() {
+        testExercise1()
+    }
+}
+
+public struct Chapter2_Exercise2 : ExerciseRunnable {
+
     
     // Implement an algorithm to find the k-th to last element on a singly linked list
-    func exercise2(list : Node, k: Int) -> Int {
+    static func exercise2(list : Node, k: Int) -> Int {
         
         // N + (N - k) steps = 2N - k
         var count = 1
@@ -171,7 +178,7 @@ class Chapter2 {
         return 0
     }
     
-    func testExercise2() {
+    static func testExercise2() {
         // 2241135 -> 3
         let list = Node(data: 2, next: Node(data: 2, next: Node(data: 4, next: Node(data: 1, next: Node(data: 1, next: Node(data: 3, next: Node(data: 5)))))))
         let k = 7
@@ -188,12 +195,19 @@ class Chapter2 {
         
     }
     
+    public static func run() {
+        testExercise2()
+    }
+}
+
+public struct Chapter2_Exercise3 : ExerciseRunnable {
+
     // Implement an algorithm to delete a node in the middle of a singly linked list, given only access to that node
     // Example:
     // Input: The node c from the linked list a -> b -> c -> d -> e
     // Result: Nothing is returned, but the new linked list looks like a -> b -> d -> e
     
-    func exercise3(middle: Node) {
+    static func exercise3(middle: Node) {
         let iter = middle
         if iter.next !== nil {
             iter.data = iter.next!.data
@@ -211,7 +225,7 @@ class Chapter2 {
         //        }
     }
     
-    func testExercise3() {
+    static func testExercise3() {
         
         let middle = Node(data: 3, next: Node(data: 4, next: Node(data: 5)))
         let list = Node(data: 1, next: Node(data: 2, next: middle))
@@ -228,9 +242,16 @@ class Chapter2 {
         // Suboptimal. Efficient solution works in O(1) by copying the data of the next node and just discarding the next node
         // Learned. Remember that linked list DO NOT REQUIRE shifting of all elements like arrays do.
     }
-    
+
+    public static func run() {
+        testExercise3()
+    }
+}
+
+public struct Chapter2_Exercise4 : ExerciseRunnable {
+
     // Write code to partition a linked list around a value x, such that all nodes less than x come before all nodes greater than or equal to x
-    func exercise4(list : Node, x: Int) {
+    static func exercise4(list : Node, x: Int) {
         
         // 1 2 5 6 2 3, x : 4
         // 1 2 2 6 5 3, x : 4
@@ -255,7 +276,7 @@ class Chapter2 {
         }
     }
     
-    func testExercise4() {
+    static func testExercise4() {
         //var list = Node(data: 1, next: Node(data: 2, next: Node(data: 6, next: Node(data: 5, next: Node(data: 2, next: Node(data: 3))))))
         let list = Node(data: 6)
         exercise4(list, x: 4)
@@ -272,11 +293,19 @@ class Chapter2 {
         // it's not stable in the sense that it doesn't preserve the order of the elements
         // BOnus!
     }
-    
+
+    public static func run() {
+        testExercise4()
+    }
+
+}
+
+public struct Chapter2_Exercise5 : ExerciseRunnable {
+
     // You have two numbers represented by a linked list, where each node contains a single digit. The digits are stored in reverse order, such that the 1's digit is at
     // the head of the list. Write a function that adds the two numbers and returns the sum as a linked list.
     
-    func sum(a: Int, b: Int, carry: Int) -> (Int, Int) {
+    static func sum(a: Int, b: Int, carry: Int) -> (Int, Int) {
         
         print("adding \(a) + \(b) + \(carry)")
         var c = 0
@@ -287,7 +316,7 @@ class Chapter2 {
         }
         return (result, c)
     }
-    func exercise5(a: Node, b: Node) -> Node {
+    static func exercise5(a: Node, b: Node) -> Node {
         
         var iterA = a
         var iterB = b
@@ -316,7 +345,7 @@ class Chapter2 {
         }
         return list
     }
-    func testExercise5() {
+    static func testExercise5() {
         //        var listA = Node(data: 1, next: Node(data: 2, next: Node(data: 6, next: Node(data: 5, next: Node(data: 2, next: Node(data: 3))))))
         //        var listB = Node(data: 0, next: Node(data: 7, next: Node(data: 4, next: Node(data: 5))))
         let listA = Node(data: 1, next: Node(data: 2, next: Node(data: 6, next: Node(data: 5, next: Node(data: 2, next: Node(data: 3))))))
@@ -337,14 +366,23 @@ class Chapter2 {
     
     // FOLLOW UP
     // Suppose the digits are stored in forward order. Repeat the above problem
-    
+
+    public static func run() {
+        testExercise5()
+    }
+
+}
+
+
+public struct Chapter2_Exercise6 : ExerciseRunnable {
+
     // Given a circular linked list, implement an algorithm which returns the node at the beginning of the loop
     // DEFINITION
     // Circular linked list: A (corrupt) linked list in which a node's next pointer points to an earlier node, so as to make a loop in the linked list
     // Example
     // Input : A -> B -> C -> D -> E -> C [the same C as earlier]
     // Output: C
-    func exercise6(list : Node) -> Int {
+    static func exercise6(list : Node) -> Int {
         
         var nodes : [Node : Bool] = [ : ]
         
@@ -360,7 +398,7 @@ class Chapter2 {
         }
         return 0
     }
-    func exercise6quadratic(list : Node) -> Int {
+    static func exercise6quadratic(list : Node) -> Int {
         
         var nodes : [Node] = []
         var iter = list
@@ -377,7 +415,7 @@ class Chapter2 {
         }
         return 0
     }
-    func exercise6runner(list : Node) -> Int {
+    static func exercise6runner(list : Node) -> Int {
         
         //        var found = 0
         var iter = list
@@ -398,7 +436,7 @@ class Chapter2 {
         }
         return 0
     }
-    func testExercise6() {
+    static func testExercise6() {
         
         let node6 = Node(data: 6)
         let node5 = Node(data: 5, next: node6)
@@ -424,8 +462,17 @@ class Chapter2 {
         // Could have implemented it better.
     }
     
+    public static func run() {
+        testExercise6()
+    }
+
+}
+
+
+public struct Chapter2_Exercise7 : ExerciseRunnable {
+
     // Implement a function to check if a linked list is a palindrome
-    func exercise7(list : Node) -> Bool {
+    static func exercise7(list : Node) -> Bool {
         
         if list.next == nil {
             return true
@@ -460,7 +507,7 @@ class Chapter2 {
         return true
     }
     
-    func testExercise7() {
+    static func testExercise7() {
         //next:
         let listB = Node(data: 1, next: Node(data: 2, next: Node(data: 3, next: Node(data: 4, next :Node(data: 3, next: Node(data: 2, next: Node(data: 1)))))))
         let result = exercise7(listB)
@@ -474,24 +521,16 @@ class Chapter2 {
         // TODO: Study recursion
     }
     
-    /*
-    Learned from this chapter:
-    Hash tables help with duplicate, counting elements problems
-    Runner helps with problems that require to calculate the length of the list of do a given number of steps
-    Remember that insert in place / delete in place operations on list are O(1)
-    Finding loops in list can be done with runner + some clever observations about the properties of the list
-    Palindrome list test can be solved with runner approach
-    */
-    
-    init() {
-        
-        
-        testExercise1()
-        //        testExercise2()
-        //        testExercise3()
-        //        testExercise4()
-        //        testExercise5()
-        //        testExercise6()
-        //        testExercise7()
+    public static func run() {
+        testExercise7()
     }
 }
+
+/*
+Learned from this chapter:
+Hash tables help with duplicate, counting elements problems
+Runner helps with problems that require to calculate the length of the list of do a given number of steps
+Remember that insert in place / delete in place operations on list are O(1)
+Finding loops in list can be done with runner + some clever observations about the properties of the list
+Palindrome list test can be solved with runner approach
+*/
