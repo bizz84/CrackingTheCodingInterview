@@ -10,14 +10,14 @@ import Foundation
 
 // TODO: Port to new exercise format (see Chapter1, Chapter2)
 
-class ArrayStack {
+struct ArrayStack {
     
     var array: [Int] = []
     
-    func push(data: Int) {
+    mutating func push(data: Int) {
         array.append(data)
     }
-    func pop() -> Int {
+    mutating func pop() -> Int {
         return array.removeLast()
     }
     func peek() -> Int {
@@ -34,9 +34,6 @@ class ArrayStack {
         }
         s += ")"
         return s
-    }
-    init() {
-        
     }
 }
 
@@ -56,90 +53,83 @@ class Stack {
     }
     
     func pop() -> Int {
-        if (top !== nil) {
-            let result = top!.data
-            top = top!.next
+        if let top = top {
+            let result = top.data
+            self.top = top.next
             return result
         }
         return -1
     }
     func peek() -> Int {
-        return top !== nil ? top!.data : -1
+        return top?.data ?? -1
     }
     func empty() -> Bool {
-        return top === nil
-    }
-    
-    func asString() {
-        
+        return top == nil
     }
 }
 
-public class Chapter3 {
+class ThreeStacks {
     
-    class ThreeStacks {
-        
-        var array : [Int] = []
-        
-        var sizes : [Int] = [ 0, 0, 0 ]
-        
-        func arrayIndexForStack(index: Int) -> Int {
-            if index == 0 {
-                return 0
-            }
-            if index == 1 {
-                return sizes[0]
-            }
-            if index == 2 {
-                return sizes[0] + sizes[1]
-            }
+    var array : [Int] = []
+    
+    var sizes : [Int] = [ 0, 0, 0 ]
+    
+    func arrayIndexForStack(index: Int) -> Int {
+        if index == 0 {
+            return 0
+        }
+        if index == 1 {
+            return sizes[0]
+        }
+        if index == 2 {
+            return sizes[0] + sizes[1]
+        }
+        return -1
+    }
+    func push(index: Int, data: Int) {
+        sizes[index]++
+        let indexToInsert = arrayIndexForStack(index)
+        array.insert(data, atIndex: indexToInsert)
+    }
+    func pop(index: Int) -> Int {
+        if sizes[index] == 0 {
             return -1
         }
-        func push(index: Int, data: Int) {
-            sizes[index]++
-            let indexToInsert = arrayIndexForStack(index)
-            array.insert(data, atIndex: indexToInsert)
+        sizes[index]--
+        let indexToInsert = arrayIndexForStack(index)
+        return array.removeAtIndex(indexToInsert)
+    }
+    func peek(index: Int) -> Int {
+        if sizes[index] == 0 {
+            return -1
         }
-        func pop(index: Int) -> Int {
-            if sizes[index] == 0 {
-                return -1
-            }
-            sizes[index]--
-            let indexToInsert = arrayIndexForStack(index)
-            return array.removeAtIndex(indexToInsert)
-        }
-        func peek(index: Int) -> Int {
-            if sizes[index] == 0 {
-                return -1
-            }
-            let indexToInsert = arrayIndexForStack(index)
-            return array[indexToInsert]
-        }
-        
-        func describe() -> String {
-            var s = "( "
-            for var i = sizes[0] - 1; i >= 0; i-- {
-                s += "\(array[i]) "
-            }
-            s += ")( "
-            for var i = sizes[1] + sizes[0] - 1; i >= sizes[0]; i-- {
-                s += "\(array[i]) "
-            }
-            s += ")( "
-            for var i = sizes[2] + sizes[1] + sizes[0] - 1; i >= sizes[0] + sizes[1]; i-- {
-                s += "\(array[i]) "
-            }
-            s += ")"
-            return s
-        }
-        
-        init() {
-            
-        }
+        let indexToInsert = arrayIndexForStack(index)
+        return array[indexToInsert]
     }
     
+    func describe() -> String {
+        var s = "( "
+        for var i = sizes[0] - 1; i >= 0; i-- {
+            s += "\(array[i]) "
+        }
+        s += ")( "
+        for var i = sizes[1] + sizes[0] - 1; i >= sizes[0]; i-- {
+            s += "\(array[i]) "
+        }
+        s += ")( "
+        for var i = sizes[2] + sizes[1] + sizes[0] - 1; i >= sizes[0] + sizes[1]; i-- {
+            s += "\(array[i]) "
+        }
+        s += ")"
+        return s
+    }
+}
+
+
+public struct Chapter3_Exercise1 : ExerciseRunnable {
+
     // Describe how you would use a single array to implement 3 stacks
-    func testExercise1() {
+    static func testExercise1() {
         // 1, 2, 3 -> 3, 2, 1
         // 4, 5, 6 -> 6, 5, 4
         // 7, 8, 9 -> 9, 8, 7
@@ -160,7 +150,7 @@ public class Chapter3 {
         print("p1: \(stack.pop(0))") // 3
         print("p2: \(stack.pop(1))") // 6
         print("p1: \(stack.pop(0))") // 1
-        print("p1: \(stack.pop(0))") // 1
+        print("p1: \(stack.pop(0))") // -1
         print("p3: \(stack.pop(2))") // 8
         print("p3: \(stack.pop(2))") // 7
         // Completed in 24 minutes
@@ -174,6 +164,12 @@ public class Chapter3 {
         // Does not extend nicely if we wanted to support more than 3 stacks
     }
     
+    public static func run() {
+        testExercise1()
+    }
+}
+
+public class Chapter3 {
     
     class NodeWithMin {
         var data: Int
@@ -425,7 +421,7 @@ public class Chapter3 {
         // Can be implemented more efficiently by only performing the swap on pop or peek
     }
     
-    func reverse(from: ArrayStack, to: ArrayStack, pivot: Int) {
+    func reverse(inout from: ArrayStack, inout to: ArrayStack, pivot: Int) {
         var steps : Int = 0
         var usedPivot = false
         while !from.empty() {
@@ -452,12 +448,12 @@ public class Chapter3 {
         }
     }
     
-    func exercise6(s1: ArrayStack) -> ArrayStack {
+    func exercise6(inout s1: ArrayStack) -> ArrayStack {
         
         // s1: 9 1 7 5 6 2 4
         // s2: []
         // temp: 4
-        let s2 = ArrayStack()
+        var s2 = ArrayStack()
         print("s1: \(s1.asString()), s2: \(s2.asString()), pop: \(s1.peek())")
         s2.push(s1.pop())
         if s1.empty() {
@@ -467,7 +463,7 @@ public class Chapter3 {
         while !s1.empty() {
             
             print("s1: \(s1.asString()), s2: \(s2.asString()), pop: \(s1.peek())")
-            reverse(s2, to: s1, pivot: s1.pop())
+            reverse(&s2, to: &s1, pivot: s1.pop())
         }
         print("s1: \(s1.asString()), s2: \(s2.asString())")
         return s2
@@ -480,7 +476,7 @@ public class Chapter3 {
     // The stack supports the following operations: push, pop, peek, and isEmpty
     func testExercise6() {
         
-        let s1 = ArrayStack()
+        var s1 = ArrayStack()
         s1.push(9)
         s1.push(1)
         s1.push(7)
@@ -489,7 +485,7 @@ public class Chapter3 {
         s1.push(2)
         s1.push(4)
         
-        let sorted = exercise6(s1)
+        let sorted = exercise6(&s1)
         
         print("sorted: \(sorted.asString())")
         

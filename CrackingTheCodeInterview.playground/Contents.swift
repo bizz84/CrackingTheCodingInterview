@@ -20,6 +20,8 @@
 //Chapter2_Exercise7.run()
 
 
+Chapter3_Exercise1.run()
+//Chapter3()
 //Chapter4()
 //Chapter5()
 //Chapter7()
