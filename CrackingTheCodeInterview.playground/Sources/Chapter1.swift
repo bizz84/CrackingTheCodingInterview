@@ -1,5 +1,3 @@
-import Foundation
-
 //
 //  Chapter1.swift
 //  CrackingCodeInterview
@@ -41,11 +39,11 @@ extension String {
     }
 }
 
-public struct Chapter1 {
+
+/*********************************************** EXERCISE 1 *****************************************************/
+public struct Chapter1_Exercise1 : ExerciseRunnable {
     
-    /*********************************************** EXERCISE 1 *****************************************************/
     // Implement an algorithm to determine if a string has all unique characters. What if you cannot use additional data structures?
-    
     static func exercise1(s : String) -> Bool {
         
         var buckets: [Character : Int] = [ : ]
@@ -74,7 +72,6 @@ public struct Chapter1 {
         return true
     }
     
-    
     public static func testExercise1(input : String) {
         
         let result1 = exercise1(input)
@@ -89,6 +86,14 @@ public struct Chapter1 {
         // Space optimisation: Can use a bit vector rather than the full Boolean array -> Bit structure with 128 bits (or 32 if letters A -> Z)
         // Consider discussing alternative strategies (sort characters of string in NLog(N) and check for adjacent characters
     }
+
+    public static func run() {
+        testExercise1("Hello")
+    }
+}
+
+public struct Chapter1 {
+    
     
     /*********************************************** EXERCISE 3 *****************************************************/
     // Given 2 strings, write a method to decide if one is a permutation of the other
@@ -391,14 +396,14 @@ public struct Chapter1 {
         // Correct but forgot to put check in code for same length
     }
     
-    public static func runAll() {
-        testExercise1("Hello")
-        testExercise1("abcde")
-        testExercise3()
-        testExercise4()
-        testExercise5()
-        testExercise6()
-        testExercise7()
-        testExercise8("waterbottle", s2: "erbottlewat")
-    }
+//    public static func runAll() {
+//        testExercise1("Hello")
+//        testExercise1("abcde")
+//        testExercise3()
+//        testExercise4()
+//        testExercise5()
+//        testExercise6()
+//        testExercise7()
+//        testExercise8("waterbottle", s2: "erbottlewat")
+//    }
 }
