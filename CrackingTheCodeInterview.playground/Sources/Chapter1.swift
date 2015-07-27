@@ -89,13 +89,13 @@ public struct Chapter1_Exercise1 : ExerciseRunnable {
 
     public static func run() {
         testExercise1("Hello")
+        testExercise1("abcde")
     }
 }
 
-public struct Chapter1 {
+/*********************************************** EXERCISE 3 *****************************************************/
+public struct Chapter1_Exercise3 : ExerciseRunnable {
     
-    
-    /*********************************************** EXERCISE 3 *****************************************************/
     // Given 2 strings, write a method to decide if one is a permutation of the other
     
     static func hashTable(s : String) -> [Character : Int] {
@@ -141,8 +141,14 @@ public struct Chapter1 {
         // Important note: Ensure to use build in comparisons for collection types
     }
     
-    
-    /*********************************************** EXERCISE 4 *****************************************************/
+    public static func run() {
+        testExercise3()
+    }
+}
+
+/*********************************************** EXERCISE 4 *****************************************************/
+public struct Chapter1_Exercise4 : ExerciseRunnable {
+
     // Write a method to replace all spaces in a string with '%20'. You may assume that the string has sufficient space at the end
     // to hold the additional characters and that you are given the 'true' length of the string
     // EXAMPLE
@@ -193,7 +199,14 @@ public struct Chapter1 {
         // Solution went directly for proceeding backwards.
     }
     
-    /*********************************************** EXERCISE 5 *****************************************************/
+    public static func run() {
+        testExercise4()
+    }
+}
+
+/*********************************************** EXERCISE 5 *****************************************************/
+public struct Chapter1_Exercise5 : ExerciseRunnable {
+
     // Implement a method to perform basic string compression using the counts of repeated characters. For example, the string aabcccccaaa would become a2b1c5a3. If the compressed string
     // would not become smaller than the original string, your method should return the original string. You can assume the string has only upper and lower case characters.
     static func exercise5(s: String) -> String {
@@ -241,8 +254,14 @@ public struct Chapter1 {
         
         // Note that often these types of problems can be resolved in two scans!
     }
-    
-    /*********************************************** EXERCISE 6 *****************************************************/
+    public static func run() {
+        testExercise5()
+    }
+}
+
+/*********************************************** EXERCISE 6 *****************************************************/
+public struct Chapter1_Exercise6 : ExerciseRunnable {
+
     // Given an image represented by an NxN matrix, where each pixel of the image is 4 bytes, write a method to rotate the image by 90 degrees.
     // Can you do this in place?
     static func exercise6(inout array: [[Int]]) {
@@ -302,7 +321,13 @@ public struct Chapter1 {
         // Could have solved quickly by paying more attention to all details of the problem
     }
     
-    /*********************************************** EXERCISE 7 *****************************************************/
+    public static func run() {
+        testExercise6()
+    }
+}
+
+/*********************************************** EXERCISE 7 *****************************************************/
+public struct Chapter1_Exercise7 : ExerciseRunnable {
     // Write an algorithm such that if an element of an MxN matrix is 0, its entire row and column are set to 0
     static func exercise7(inout array : [[Int]]) {
         
@@ -375,6 +400,14 @@ public struct Chapter1 {
         // Did not realise there was a way to solve this with O(1) space by using first row and column as flag. Clever.
     }
     
+    public static func run() {
+        testExercise7()
+    }
+}
+
+/*********************************************** EXERCISE 8 *****************************************************/
+public struct Chapter1_Exercise8 : ExerciseRunnable {
+
     // Assume you have a methods isSubstring which checks if one word is a substring of another. Given two strings s1 and s2,
     // write code to check if s2 is a rotation of s1 using only one call to isSubstring (e.g. "waterbottle" is a rotation of
     // "erbottlewat").
@@ -395,15 +428,8 @@ public struct Chapter1 {
         // Identified solution with O(2n) space, O(n) time
         // Correct but forgot to put check in code for same length
     }
-    
-//    public static func runAll() {
-//        testExercise1("Hello")
-//        testExercise1("abcde")
-//        testExercise3()
-//        testExercise4()
-//        testExercise5()
-//        testExercise6()
-//        testExercise7()
-//        testExercise8("waterbottle", s2: "erbottlewat")
-//    }
+
+    public static func run() {
+        testExercise8("waterbottle", s2: "erbottlewat")
+    }
 }
