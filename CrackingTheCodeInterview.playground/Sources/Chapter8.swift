@@ -167,11 +167,10 @@ public class Chapter8 {
     
     public init() {
         
-        var deck = Deck()
+        //let deck = Deck()
         //deck.showDeck()
         
-        var game = BlackJackGame()
-        
+        let game = BlackJackGame()
         while !game.lost {
             game.popCard()
         }

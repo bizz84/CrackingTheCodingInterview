@@ -69,8 +69,8 @@ public class Chapter7 {
     //    extension Line
     
     func exercise3() {
-        let line1 = Line(slope: 0.5, offset: 10)
-        let line2 = Line(slope: 0.5, offset: 11)
+        //let line1 = Line(slope: 0.5, offset: 10)
+        //let line2 = Line(slope: 0.5, offset: 11)
     }
     
     // Write methods to implement the multiply, subtract and divide operations for integers. Use only the add operator
@@ -192,7 +192,7 @@ public class Chapter7 {
         
         let sq1 = Square(centerX: 5, centerY: 5, side: 10)
         let sq2 = Square(centerX: 20, centerY: 30, side: 15)
-        let l = intersection(sq1, s2: sq2)
+        let _ = intersection(sq1, s2: sq2)
     }
     
     // Skip 7.6, 7.7
