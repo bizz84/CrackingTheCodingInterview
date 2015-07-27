@@ -10,55 +10,42 @@ import Foundation
 
 class NSStringBinary {
     
-    class func binaryStringFromInt(_ intValue: Int) -> NSString {
-        return ""
-        /* TODO Implement as follows
-        + (NSString *)binaryStringFromInt:(NSInteger)intValue {
-        
-        int byteBlock = 8,    // 8 bits per byte
-        totalBits = sizeof(int) * byteBlock, // Total bits
-        binaryDigit = 1;  // Current masked bit
-        
+    class func binaryStringFromInt(intValue: Int32) -> NSString {
+        let byteBlock = 8    // 8 bits per byte
+        var totalBits = sizeof(Int32) * byteBlock // Total bits
+        var binaryDigit : Int32 = 1  // Current masked bit
+  
         // Binary string
-        NSMutableString *binaryStr = [[NSMutableString alloc] init];
-        
-        do
-        {
-        // Check next bit, shift contents left, append 0 or 1
-        [binaryStr insertString:((intValue & binaryDigit) ? @"1" : @"0" ) atIndex:0];
-        
-        // More bits? On byte boundary ?
-        if (--totalBits && !(totalBits % byteBlock))
-        [binaryStr insertString:@"|" atIndex:0];
-        
-        // Move to next bit
-        binaryDigit <<= 1;
-        
-        } while (totalBits);
+        var binaryStr = ""
+        repeat {
+            // Check next bit, shift contents left, append 0 or 1
+            binaryStr = (intValue & binaryDigit != 0 ? "1" : "0") + binaryStr
+            if --totalBits != 0 && totalBits % byteBlock == 0 {
+                binaryStr = "|" + binaryStr
+            }
+            binaryDigit <<= 1
+            
+        } while totalBits != 0
         
         // Return binary string
-        return binaryStr;
-        
-        }
-
-        */
+        return binaryStr
     }
 }
 
-class Chapter5 {
+public class Chapter5 {
     
     // You are given two 32-bit numbers, N and M, and two positions, i and j. Write a method to insert M into N such that M starts at bit j and ends at bit i.
     // You can assume that the bits j through i have enough space to fit all of M. That is, if M = 10011, you can assume that there are at least 5 bits between
     // j and i. You would not, for example, have j = 3 and i = 2 because M could not fully fit between bit 3 and bit 2
-    func exercise1(N : Int, M: Int, i: Int, j: Int) -> Int {
+    func exercise1(N : Int32, M: Int32, i: Int32, j: Int32) -> Int32 {
         // example
         print("i: \(i), j: \(j)")
         print("N: \(NSStringBinary.binaryStringFromInt(N))")
         print("M: \(NSStringBinary.binaryStringFromInt(M))")
         
         let bitsToKeep = j - i + 1 // 4
-        let maskBase = (1 << bitsToKeep) - 1 // 0b1111
-        let maskShiftedNegated = ~(maskBase << i) // 0b11..1000011
+        let maskBase : Int32 = (1 << bitsToKeep) - 1 // 0b1111
+        let maskShiftedNegated : Int32 = ~(maskBase << i) // 0b11..1000011
         let clearN = N & maskShiftedNegated // 0b11100001
         let maskedMatI = (M & maskBase) << i // 0b011000
         let MinN = clearN | maskedMatI
@@ -155,11 +142,11 @@ class Chapter5 {
         let updated = reset1 | nextPowerOfTwo
         return updated
     }
-    func printNextLargerst(n : Int) -> Int {
+    func printNextLargerst(n : Int32) -> Int32 {
         if n == 0 {
             return -1
         }
-        var nextPowerOfTwo = 1
+        var nextPowerOfTwo : Int32 = 1
         while n & nextPowerOfTwo == 0 {
             nextPowerOfTwo = nextPowerOfTwo << 1
         }
@@ -202,13 +189,13 @@ class Chapter5 {
     }
     
     // Write a function to determine the number of bits you would need to flip to convert integer A to integer B
-    func exercise5(a: Int, b: Int) -> Int {
+    func exercise5(a: Int32, b: Int32) -> Int32 {
         
         if a == b {
             return 0
         }
-        var flip = 0
-        var next = 1
+        var flip : Int32 = 0
+        var next : Int32 = 1
         while a >= next || b >= next {
             if a & next != b & next {
                 flip++
@@ -235,11 +222,11 @@ class Chapter5 {
     }
     
     // Write a program to swap odd and even bits in an integer with as fwe instructions as possible (e.g. bit 0 and bit 1 are swapped, bit 2 and bit 3 are swapped, and so on)
-    func exercise6(a: Int) -> Int {
+    func exercise6(a: Int32) -> Int32 {
         // Mask can be precomputed : 0b0101010101010101010101010101
-        var oddMask = 1; //
+        var oddMask : Int32 = 1; //
         for var i = 0; i < 32; i += 2 {
-            oddMask |= 1 << i
+            oddMask |= Int32(1 << i)
         }
         let evenMask = oddMask << 1
         let result = (a >> 1 & oddMask) | (a << 1 & evenMask)
@@ -317,12 +304,12 @@ class Chapter5 {
         // Correct and efficient solution, forgot to check case where x1, x2 on same byte!
         // 5 more minutes for corner cases
     }
-    init() {
-        //testExercise1()
+    public init() {
+        testExercise1()
         //testExercise2()
         //        exercise3()
         //        testExercise5()
         //        testExercise6()
-        testExercise8()
+        //testExercise8()
     }
 }
