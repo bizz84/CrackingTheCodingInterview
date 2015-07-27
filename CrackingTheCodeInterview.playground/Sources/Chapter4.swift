@@ -8,6 +8,8 @@
 
 import Foundation
 
+// TODO: Port to new exercise format (see Chapter1, Chapter2)
+
 /*
 Intro
 Worst case & average case can vary wildly.

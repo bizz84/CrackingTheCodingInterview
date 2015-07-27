@@ -8,6 +8,8 @@
 
 import Foundation
 
+// TODO: Port to new exercise format (see Chapter1, Chapter2)
+
 //extension Array {
 //    func toString() -> String{
 //        var str : String = ""

@@ -8,6 +8,7 @@
 
 import Foundation
 
+// TODO: Port to new exercise format (see Chapter1, Chapter2)
 
 public class Chapter7 {
     

@@ -8,9 +8,11 @@
 
 import Foundation
 
-class NSStringBinary {
+// TODO: Port to new exercise format (see Chapter1, Chapter2)
+
+struct NSStringBinary {
     
-    class func binaryStringFromInt(intValue: Int32) -> NSString {
+    static func binaryStringFromInt(intValue: Int32) -> NSString {
         let byteBlock = 8    // 8 bits per byte
         var totalBits = sizeof(Int32) * byteBlock // Total bits
         var binaryDigit : Int32 = 1  // Current masked bit
