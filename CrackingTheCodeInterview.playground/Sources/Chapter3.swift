@@ -8,8 +8,6 @@
 
 import Foundation
 
-// TODO: Port to new exercise format (see Chapter1, Chapter2)
-
 struct ArrayStack {
     
     var array: [Int] = []
@@ -37,7 +35,7 @@ struct ArrayStack {
     }
 }
 
-class Stack {
+struct Stack {
     
     var top : Node?
     
@@ -48,11 +46,11 @@ class Stack {
         self.top = top
     }
     
-    func push(data: Int) {
+    mutating func push(data: Int) {
         top = Node(data: data, next: top)
     }
     
-    func pop() -> Int {
+    mutating func pop() -> Int {
         if let top = top {
             let result = top.data
             self.top = top.next
@@ -68,7 +66,7 @@ class Stack {
     }
 }
 
-class ThreeStacks {
+struct ThreeStacks {
     
     var array : [Int] = []
     
@@ -86,12 +84,12 @@ class ThreeStacks {
         }
         return -1
     }
-    func push(index: Int, data: Int) {
+    mutating func push(index: Int, data: Int) {
         sizes[index]++
         let indexToInsert = arrayIndexForStack(index)
         array.insert(data, atIndex: indexToInsert)
     }
-    func pop(index: Int) -> Int {
+    mutating func pop(index: Int) -> Int {
         if sizes[index] == 0 {
             return -1
         }
@@ -126,14 +124,14 @@ class ThreeStacks {
 }
 
 
+// Describe how you would use a single array to implement 3 stacks
 public struct Chapter3_Exercise1 : ExerciseRunnable {
 
-    // Describe how you would use a single array to implement 3 stacks
     static func testExercise1() {
         // 1, 2, 3 -> 3, 2, 1
         // 4, 5, 6 -> 6, 5, 4
         // 7, 8, 9 -> 9, 8, 7
-        let stack = ThreeStacks()
+        var stack = ThreeStacks()
         stack.push(0, data: 1)
         stack.push(1, data: 4)
         stack.push(2, data: 7)
@@ -169,26 +167,27 @@ public struct Chapter3_Exercise1 : ExerciseRunnable {
     }
 }
 
-public class Chapter3 {
-    
-    class NodeWithMin {
-        var data: Int
-        var min: Int
+// How would you design a stack which, in addition to push and pop, also has a function min that returns the minimum element? Push, pop and min should all operate in O(1) time
+public struct Chapter3_Exercise2 : ExerciseRunnable {
+
+    struct NodeWithMin {
+        let data: Int
+        let min: Int
         init(data: Int, min: Int) {
             self.data = data
             self.min = min
         }
     }
     
-    class StackWithMin {
+    struct StackWithMin {
         
         var array: [NodeWithMin] = []
         
-        func push(data: Int) {
+        mutating func push(data: Int) {
             let m = min(data, minValue())
             array.append(NodeWithMin(data: data, min: m))
         }
-        func pop() -> Int {
+        mutating func pop() -> Int {
             return array.removeLast().data
         }
         func peek() -> NodeWithMin {
@@ -201,48 +200,53 @@ public class Chapter3 {
             }
             return peek().min
         }
-        init() {
-            
-        }
     }
     
-    // How would you design a stack which, in addition to push and pop, also has a function min that returns the minimum element? Push, pop and min should all operate in O(1) time
-    func testExercise2() {
+    static func testExercise2() {
         
         // Evaluated whether it's possible to store the minimum on a linked list.
         // If a pop causes the minimum to be remove, the next available minimum can't be found in O(1) time if some sort of ordering isn't kept
         // Spent the whole time thinking it was a queue
         // Discovered that this can't be done with a queue
         
-        let s = StackWithMin()
+        var s = StackWithMin()
         
         s.push(7)
-        print("\(s.minValue())")
+        print("\(s.minValue())") // 7
         s.push(1)
-        print("\(s.minValue())")
+        print("\(s.minValue())") // 1
         s.push(5)
-        print("\(s.minValue())")
+        print("\(s.minValue())") // 1
         s.push(3)
-        print("\(s.minValue())")
+        print("\(s.minValue())") // 1
         s.push(4)
-        print("\(s.minValue())")
-        print("pop: \(s.pop()), min: \(s.minValue())")
-        print("pop: \(s.pop()), min: \(s.minValue())")
-        print("pop: \(s.pop()), min: \(s.minValue())")
-        print("pop: \(s.pop()), min: \(s.minValue())")
+        print("\(s.minValue())") // 1
+        print("pop: \(s.pop()), min: \(s.minValue())") // 1
+        print("pop: \(s.pop()), min: \(s.minValue())") // 1
+        print("pop: \(s.pop()), min: \(s.minValue())") // 1
+        print("pop: \(s.pop()), min: \(s.minValue())") // 7
         
         // 14 minutes
         // Very good learning from this exercise. Shows what can be done with stacks as a variation of existing problems
     }
-    
-    // Imagine a literal stack of plates. If the stack gets too high, it might topple.
-    // Therefore, in real life, we would start the new stack when the previous stack exceeds some threshold.
-    // Implement a data structure SetOfStacks that mimicks this. SetOfStacks should be composed of several stacks and
-    // should create a new stack once the previous stack exceeds capacity. SetOfStacks.push and SetOfStacks.pop()
-    // should behave identically to a single stack (that is, pop() should return the same values as it would if it
-    // were just a single stack).
-    
-    // FOLLOW UP: implement a function popAt(int index) which performs a pop operation on a specific sub-stack
+
+    public static func run() {
+        testExercise2()
+    }
+
+}
+
+// Imagine a literal stack of plates. If the stack gets too high, it might topple.
+// Therefore, in real life, we would start the new stack when the previous stack exceeds some threshold.
+// Implement a data structure SetOfStacks that mimicks this. SetOfStacks should be composed of several stacks and
+// should create a new stack once the previous stack exceeds capacity. SetOfStacks.push and SetOfStacks.pop()
+// should behave identically to a single stack (that is, pop() should return the same values as it would if it
+// were just a single stack).
+
+// FOLLOW UP: implement a function popAt(int index) which performs a pop operation on a specific sub-stack
+public struct Chapter3_Exercise3 : ExerciseRunnable {
+
+    // TODO: Convert to struct
     class SimpleStack {
         
         var array : [Int] = []
@@ -251,6 +255,7 @@ public class Chapter3 {
             self.capacity = capacity
         }
         
+        // Why does array stay empty if using struct/mutating?
         func push(data: Int) {
             array.append(data)
         }
@@ -270,11 +275,11 @@ public class Chapter3 {
         }
     }
     
-    class SetOfStacks {
+    struct SetOfStacks {
         
         var stacks : [SimpleStack] = []
         let capacity : Int
-        func push(data : Int) {
+        mutating func push(data : Int) {
             
             if (stacks.count == 0) {
                 print("Creating first stack")
@@ -289,7 +294,7 @@ public class Chapter3 {
             lastStack.push(data)
         }
         
-        func pop() -> Int {
+        mutating func pop() -> Int {
             if (stacks.count == 0) {
                 // Error
                 print("Stack is empty: Error")
@@ -304,7 +309,7 @@ public class Chapter3 {
             return result
         }
         
-        func popAt(index: Int) -> Int {
+        mutating func popAt(index: Int) -> Int {
             if (index >= stacks.count) {
                 // Error
                 return -1
@@ -318,9 +323,9 @@ public class Chapter3 {
         }
     }
     
-    func testExercise3() {
+    static func testExercise3() {
         
-        let ss = SetOfStacks(capacity: 3)
+        var ss = SetOfStacks(capacity: 3)
         for i in 1...9 {
             ss.push(i)
             print("pushed: \(i)")
@@ -332,18 +337,25 @@ public class Chapter3 {
         
         // Completed in 19 minutes
         // Guided thorugh implementation.
-        // Properly separated classes for reuse. Push implemnetation for SetOfStack could be cleaner
+        // Properly separated classes for reuse. Push implementation for SetOfStack could be cleaner
         // Good implementation, didn't ask about rollover policy, but likely would discuss this with interviewer (for bonus points)
     }
     
-    // In the classic problem of the Towers of Hanoi, you have 3 towers and N disks of different sizes which can slide onto any tower.
-    // The puzzle starts with disks sorted in ascending order of size from top to bottom (i.e. each disk sits on top of an even larger one).
-    // You have the following constraints:
-    // 1. Only one disk can be moved at a time
-    // 2. A disk is slid off the top of one tower onto the next tower.
-    // 3. A disk can only be placed on top of a larger disk
-    // Write a program to move disks from the first tower to the last using stacks
-    func solve(s: ThreeStacks, level: Int, origin: Int, buffer: Int, destination: Int) {
+    public static func run() {
+        testExercise3()
+    }
+}
+
+// In the classic problem of the Towers of Hanoi, you have 3 towers and N disks of different sizes which can slide onto any tower.
+// The puzzle starts with disks sorted in ascending order of size from top to bottom (i.e. each disk sits on top of an even larger one).
+// You have the following constraints:
+// 1. Only one disk can be moved at a time
+// 2. A disk is slid off the top of one tower onto the next tower.
+// 3. A disk can only be placed on top of a larger disk
+// Write a program to move disks from the first tower to the last using stacks
+public struct Chapter3_Exercise4 : ExerciseRunnable {
+
+    static func solve(inout s: ThreeStacks, level: Int, origin: Int, buffer: Int, destination: Int) {
         if level == 2 {
             s.push(buffer, data: s.pop(origin))
             print("\(s.describe())")
@@ -353,29 +365,37 @@ public class Chapter3 {
             print("\(s.describe())")
         }
         else {
-            solve(s, level: level - 1, origin: origin, buffer: destination, destination: buffer)
+            solve(&s, level: level - 1, origin: origin, buffer: destination, destination: buffer)
             s.push(destination, data: s.pop(origin))
-            solve(s, level: level - 1, origin: buffer, buffer: origin, destination: destination)
+            solve(&s, level: level - 1, origin: buffer, buffer: origin, destination: destination)
         }
         
     }
-    func testExercise4() {
+    static func testExercise4() {
         
         let N = 12
-        let s = ThreeStacks()
+        var s = ThreeStacks()
         for var i = N; i >= 1; i-- {
             s.push(0, data: i)
         }
         
-        solve(s, level: N, origin: 0, buffer: 1, destination: 2)
+        solve(&s, level: N, origin: 0, buffer: 1, destination: 2)
         // Took 1 hour to get to the solution that works for N = 4
         // Approach is to solve for N == 2, understand solution for N = 3 given 2,
         // and determine special conditions for solving for greater N
         
         // No special conditions were required, just proper resolution of the recursive approach
     }
-    
-    class MyQueue {
+
+    public static func run() {
+        testExercise4()
+    }
+}
+
+// Write a MyQueue class which implements a queue using two stacks
+public struct Chapter3_Exercise5 : ExerciseRunnable {
+
+    struct MyQueue {
         
         var s1: Stack
         var s2: Stack
@@ -385,7 +405,7 @@ public class Chapter3 {
             s2 = Stack()
         }
         
-        func push(data: Int) {
+        mutating func push(data: Int) {
             
             while !s1.empty() {
                 s2.push(s1.pop())
@@ -395,14 +415,13 @@ public class Chapter3 {
                 s1.push(s2.pop())
             }
         }
-        func pop() -> Int {
+        mutating func pop() -> Int {
             return s1.pop()
         }
     }
-    // Write a MyQueue class which implements a queue using two stacks
-    func testExercise5() {
+    static func testExercise5() {
         
-        let q = MyQueue()
+        var q = MyQueue()
         q.push(1)
         q.push(2)
         q.push(3)
@@ -420,8 +439,18 @@ public class Chapter3 {
         // Solved in 17 minutes
         // Can be implemented more efficiently by only performing the swap on pop or peek
     }
-    
-    func reverse(inout from: ArrayStack, inout to: ArrayStack, pivot: Int) {
+
+    public static func run() {
+        testExercise5()
+    }
+}
+
+// Write a program to sort a stack in ascending order (with biggest items on top).
+// You may use at most one additional stack to hold items, but you may not copy the elements into any other data structure (such as an array).
+// The stack supports the following operations: push, pop, peek, and isEmpty
+public struct Chapter3_Exercise6 : ExerciseRunnable {
+
+    static func reverse(inout from: ArrayStack, inout to: ArrayStack, pivot: Int) {
         var steps : Int = 0
         var usedPivot = false
         while !from.empty() {
@@ -448,7 +477,7 @@ public class Chapter3 {
         }
     }
     
-    func exercise6(inout s1: ArrayStack) -> ArrayStack {
+    static func exercise6(inout s1: ArrayStack) -> ArrayStack {
         
         // s1: 9 1 7 5 6 2 4
         // s2: []
@@ -469,12 +498,7 @@ public class Chapter3 {
         return s2
     }
     
-    
-    
-    // Write a program to sort a stack in ascending order (with biggest items on top).
-    // You may use at most one additional stack to hold items, but you may not copy the elements into any other data structure (such as an array).
-    // The stack supports the following operations: push, pop, peek, and isEmpty
-    func testExercise6() {
+    static func testExercise6() {
         
         var s1 = ArrayStack()
         s1.push(9)
@@ -498,8 +522,16 @@ public class Chapter3 {
         // However it's much simpler and doesn't require so many reversals of the array.
         // This means that the original idea could have been simplified BEFORE implementing the solution
         
-        // I need to be very aware of coming up with solutions that are simple!
+        // I need come up with solutions that are simple!
     }
+
+    public static func run() {
+        testExercise6()
+    }
+}
+
+
+public struct Chapter3_Exercise7 : ExerciseRunnable {
     
     // An animal shelter holds only dogs and cats, and operates on a strictly "first in, first out" basis.
     // People must adopt either the "oldest" (based on arrival time) of all animals at the shelter,
@@ -508,7 +540,7 @@ public class Chapter3 {
     // and implement operations such as enqueue, dequeueAny, dequeueDog and dequeueCat.
     // You may use the built-in Linked List data structure
     
-    class AnimalShelter {
+    struct AnimalShelter {
         
         var catsList : Node?
         var dogsList : Node?
@@ -522,7 +554,7 @@ public class Chapter3 {
             list!.append(data)
             return list!
         }
-        func enqueue(isDog: Bool) {
+        mutating func enqueue(isDog: Bool) {
             if (isDog) {
                 print("enqueuing dog: \(arrival)")
                 dogsList = updateList(dogsList, data: arrival++)
@@ -532,7 +564,7 @@ public class Chapter3 {
                 catsList = updateList(catsList, data: arrival++)
             }
         }
-        func dequeue(inout list: Node?) -> Int {
+        mutating func dequeue(inout list: Node?) -> Int {
             if list == nil {
                 return -1 // No dogs left
             }
@@ -540,10 +572,10 @@ public class Chapter3 {
             list = list!.next
             return result
         }
-        func dequeueDog() -> Int {
+        mutating func dequeueDog() -> Int {
             return dequeue(&dogsList)
         }
-        func dequeueCat() -> Int {
+        mutating func dequeueCat() -> Int {
             return dequeue(&catsList)
         }
         
@@ -554,7 +586,7 @@ public class Chapter3 {
             return catsList !== nil ? catsList!.data : -1
         }
         
-        func dequeueAny() -> Int {
+        mutating func dequeueAny() -> Int {
             let firstDogArrival = peekDog()
             let firstCatArrival = peekCat()
             if firstCatArrival == -1 && firstDogArrival == -1 {
@@ -568,15 +600,11 @@ public class Chapter3 {
             }
             return firstCatArrival > firstDogArrival ? dequeueDog() : dequeueCat()
         }
-        
-        init() {
-            
-        }
     }
     
-    func testExercise7() {
+    static func testExercise7() {
         
-        let a = AnimalShelter()
+        var a = AnimalShelter()
         a.enqueue(true) // dog 0
         a.enqueue(true) // dog 1
         a.enqueue(false) // cat 2
@@ -601,12 +629,7 @@ public class Chapter3 {
         // Should have asked what information we desire to hold for each animal (name?)
     }
     
-    public init() {
-        //        testExercise1()
-        //        testExercise2()
-        //        testExercise3()
-        //        testExercise4()
-        //        testExercise6()
+    public static func run() {
         testExercise7()
     }
 }
