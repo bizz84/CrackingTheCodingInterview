@@ -54,8 +54,15 @@
 //Chapter7_Exercise3.run()
 //Chapter7_Squares.run()
 
-//Chapter7()
-//Chapter9()
-//Chapter10()
-//Chapter11()
+// Chapter 9
+//Chapter9_Exercise1.run()
+//Chapter9_Exercise2.run()
+//Chapter9_Exercise3.run()
+//Chapter9_Exercise4.run()
+//Chapter9_Exercise5.run()
+//Chapter9_Exercise6.run() // Wrong Solution
+//Chapter9_Exercise7.run() // Wrong Solution
+//Chapter9_Exercise8.run() // Wrong Solution
+//Chapter9_Exercise9.run() // Wrong Solution
+
 

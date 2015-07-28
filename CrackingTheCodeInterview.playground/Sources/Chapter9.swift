@@ -10,12 +10,11 @@ import Foundation
 
 // TODO: Port to new exercise format (see Chapter1, Chapter2)
 
-public class Chapter9 {
-    
-    
-    // A child is running up a staircase with n steps, and can hop either 1 step, 2 steps, or 3 steps at a time.
-    // Implement a method to count how many possible ways the child can run up the stairs.
-    func hops(startPos: Int, steps: Int) -> Int {
+// A child is running up a staircase with n steps, and can hop either 1 step, 2 steps, or 3 steps at a time.
+// Implement a method to count how many possible ways the child can run up the stairs.
+public struct Chapter9_Exercise1 : ExerciseRunnable {
+
+    static func hops(startPos: Int, steps: Int) -> Int {
         if startPos == steps {
             return 0
         }
@@ -35,7 +34,7 @@ public class Chapter9 {
         let steps3 = hops(startPos + 3, steps: steps)
         return steps1 + steps2 + steps3
     }
-    func hops(steps: Int) -> Int {
+    static func hops(steps: Int) -> Int {
         
         var base : [Int] = Array(count : steps, repeatedValue : 0)
         base[0] = 1
@@ -46,7 +45,7 @@ public class Chapter9 {
         }
         return base[steps - 1]
     }
-    func hopsTopDown(steps: Int, inout map: [Int]) -> Int {
+    static func hopsTopDown(steps: Int, inout map: [Int]) -> Int {
         
         if steps <= 3 {
             return map[steps - 1]
@@ -60,14 +59,14 @@ public class Chapter9 {
         return map[steps - 1]
     }
     
-    func exercise1(steps: Int) -> Int {
+    static func exercise1(steps: Int) -> Int {
         // We took k hops to get to position m, we can then move to position m + 1, m + 2, m + 3 i n k + 1 hops
         
         //return hops(0, steps: steps)
         return hops(steps)
     }
     
-    func testExercise1(steps: Int) {
+    static func testExercise1(steps: Int) {
         var map = Array(count: steps, repeatedValue: 0)
         map[0] = 1
         map[1] = 2
@@ -77,13 +76,25 @@ public class Chapter9 {
         // Solved in 15 min recursively
         // Another 10 minutes to come up with dynamic programming approach which takes linear time.
     }
-    
-    // Imagine a robot sitting on the upper left corner of an X by Y grid. The robot can only move in two directions: right and down
-    // How many possible paths are there for the robot to go from (0, 0) to (X, Y)?
-    // FOLLOW UP
-    // Imagine certain spots are "off limits", such that the robot cannot step on them. Design an algorithm to find a path for the robot from the
-    // top left to the bottom right
-    func exercise2(X: Int, Y: Int, inout grid : [[Int]]) -> Int {
+    public static func run() {
+        testExercise1(4)
+        testExercise1(5)
+        testExercise1(10)
+        testExercise1(14)
+        testExercise1(20)
+        testExercise1(36)
+    }
+}
+
+// Imagine a robot sitting on the upper left corner of an X by Y grid. The robot can only move in two directions: right and down
+// How many possible paths are there for the robot to go from (0, 0) to (X, Y)?
+// FOLLOW UP
+// Imagine certain spots are "off limits", such that the robot cannot step on them. Design an algorithm to find a path for the robot from the
+// top left to the bottom right
+public struct Chapter9_Exercise2 : ExerciseRunnable {
+
+    // TODO: Re-implement!
+    static func exercise2(X: Int, Y: Int, inout grid : [[Int]]) -> Int {
         
         if X < 1 || Y < 1 {
             return 0 // Negative grid
@@ -123,7 +134,7 @@ public class Chapter9 {
         //        print("Y: \(Y), X: \(X), steps : \(grid[Y - 1][X - 1])")
         return grid[Y - 1][X - 1]
     }
-    func findPath(X: Int, Y: Int, var grid : [[Int]]) -> [(Int, Int)] {
+    static func findPath(X: Int, Y: Int, var grid : [[Int]]) -> [(Int, Int)] {
         var path : [(Int, Int)] = Array()
         var y = Y - 1
         var x = X - 1
@@ -150,13 +161,13 @@ public class Chapter9 {
         return path
     }
     
-    func testExercise2Grid(X: Int, Y: Int) {
+    static func testExercise2Grid(X: Int, Y: Int) {
         
         var grid : [[Int]] = Array(count: Y, repeatedValue: Array(count: X, repeatedValue: 0))
         exercise2(X, Y: Y, grid: &grid)
         print("Y: \(Y), X: \(X), steps : \(grid[Y - 1][X - 1])")
     }
-    func testExercise2() {
+    static func testExercise2() {
         testExercise2Grid(2, Y: 1)
         testExercise2Grid(1, Y: 2)
         testExercise2Grid(2, Y: 2)
@@ -166,7 +177,7 @@ public class Chapter9 {
         testExercise2Grid(4, Y: 4)
         testExercise2Grid(5, Y: 5)
     }
-    func testExercise2Path() {
+    static func testExercise2Path() {
         
         var grid : [[Int]] = Array(count: 4, repeatedValue: Array(count: 4, repeatedValue: 0))
         grid[2][1] = -1
@@ -184,13 +195,20 @@ public class Chapter9 {
         
         // Consider using caches to solve dynamic programming problems
     }
+    public static func run() {
+        testExercise2()
+        testExercise2Path()
+    }
+
+}
+
+// A magic index in an array  A[0...n-1] is defined to be an index such that A[i] = i. Given a sorted array of distinct integers,
+// write a method to find a magic index, if one exists, in array A.
+// FOLLOW UP
+// What if the values are not distinct?
+public struct Chapter9_Exercise3 : ExerciseRunnable {
     
-    // A magic index in an array  A[0...n-1] is defined to be an index such that A[i] = i. Given a sorted array of distinct integers,
-    // write a method to find a magic index, if one exists, in array A.
-    // FOLLOW UP
-    // What if the values are not distinct?
-    
-    func exercise3(a: [Int]) -> Int {
+    static func exercise3(a: [Int]) -> Int {
         //      0     1   2  3  4  5  6
         // A = [-20, -10, 0, 5, 5, 5, 5]
         
@@ -214,9 +232,9 @@ public class Chapter9 {
         return -1
     }
     
-    func testExercise3() {
+    static func testExercise3() {
         
-        let magic = exercise3([-20, -10, 0, 4, 4, 7, 20])
+        let magic = exercise3([-20, -10, 0, 3, 4, 7, 20])
         print("\(magic)")
         
         // Solution in 13 minutes, doesn't work for non-distinct values, which would require a linear scan instead.
@@ -224,9 +242,16 @@ public class Chapter9 {
         // Optimal solution is still recursive
         // WTF Stop using iteration, use recursion more!
     }
-    
-    // Write a method to return all subsets of a set
-    func exercise4(a : [Int]) -> [[Int]] {
+
+    public static func run() {
+        testExercise3()
+    }
+}
+
+// Write a method to return all subsets of a set
+public struct Chapter9_Exercise4 : ExerciseRunnable {
+
+    static func exercise4(a : [Int]) -> [[Int]] {
         
         var result : [[Int]] = [a]
         for var i = 0; i < a.count; i++ {
@@ -242,7 +267,7 @@ public class Chapter9 {
         return result
     }
     
-    func exercise4Recursive(a : [Int], index : Int) -> [[Int]] {
+    static func exercise4Recursive(a : [Int], index : Int) -> [[Int]] {
         if index == 0 {
             return [[], [a[0]]]
         }
@@ -257,7 +282,7 @@ public class Chapter9 {
         return newSubsets
     }
     
-    func testExercise4() {
+    static func testExercise4() {
         
         let combinations = exercise4Recursive([1, 2, 3, 4], index:3)
         print("\(combinations)")
@@ -268,9 +293,16 @@ public class Chapter9 {
         // Solution (N) = Append Element to each solution to (N-1) and add 1
         // There is also a solution of combinatorics nature, calculating sets from bit representations of all integers from 0 to 2^N
     }
-    
-    // Write a method to compute all permutations of a string of unique characters
-    func permutations(s : String) -> [String] {
+    public static func run() {
+        testExercise4()
+    }
+
+}
+
+// Write a method to compute all permutations of a string of unique characters
+public struct Chapter9_Exercise5 : ExerciseRunnable {
+
+    static func permutations(s : String) -> [String] {
         if s.characters.count == 0 {
             return []
         }
@@ -291,18 +323,25 @@ public class Chapter9 {
         print("\(s) produced \(newStrings)")
         return newStrings
     }
-    func testExercise5() {
+    static func testExercise5() {
         
         permutations("abcd")
         // Solved in 20 minutes
         // Code is a bit dirty but works, calculates in n! steps
     }
-    
-    // Implement an algorithm to print all valid (e.g., properly opened and closed) combinations of n-pairs of parentheses
-    // EXAMPLE:
-    // Input : 3
-    // Output: ((())), (()()), (())(), ()(()), ()()()
-    func parentheses(N: Int) -> [String] {
+    public static func run() {
+        testExercise5()
+    }
+}
+
+// Implement an algorithm to print all valid (e.g., properly opened and closed) combinations of n-pairs of parentheses
+// EXAMPLE:
+// Input : 3
+// Output: ((())), (()()), (())(), ()(()), ()()()
+public struct Chapter9_Exercise6 : ExerciseRunnable {
+
+    // TODO: Re-implement!
+    static func parentheses(N: Int) -> [String] {
         
         // Given Sol(N) = set of solutions
         // Sol(N+1) = ()Sol(N), Sol(N)(), (Sol(N))
@@ -326,7 +365,7 @@ public class Chapter9 {
         return solution
     }
     
-    func parentheses(inout set: [String], s: String, leftRem : Int, rightRem : Int) {
+    static func parentheses(inout set: [String], s: String, leftRem : Int, rightRem : Int) {
         if leftRem == 0 && rightRem == 0 {
             set.append(s);
         }
@@ -342,7 +381,7 @@ public class Chapter9 {
         }
     }
     
-    func testExercise6() {
+    static func testExercise6() {
         let n = 4
         var set : [String] = []
         parentheses(&set, s: "", leftRem: n, rightRem: n)
@@ -355,9 +394,18 @@ public class Chapter9 {
         // Method has duplicates, doens't work
         // Book solution iteratively builds list with rules leftPar > 0, rightPar > leftPar
     }
+
+    public static func run() {
+        testExercise6()
+    }
+}
+
+// Implement the "paint fill" function that one might see on many image editing programs. That is, given a screen
+// (represented by a two-dimensional array of colors), a point, and a new color, fill the surrounding area until the color changes from the original color.
+public struct Chapter9_Exercise7 : ExerciseRunnable {
+
+    // TODO: Implement!
     
-    // Implement the "paint fill" function that one might see on many image editing programs. That is, given a screen
-    // (represented by a two-dimensional array of colors), a point, and a new color, fill the surrounding area until the color changes from the original color.
     //    enum Color {
     //        case Black, White, Red, Yellow, Green
     //    }
@@ -375,16 +423,24 @@ public class Chapter9 {
     //    }
     
     //    func paintFill
-    func exercise7() {
+    static func exercise7() {
         
         // Not implemented, could not think that this was depth-first search on a graph
         // Very computationally expensive. Better to implement breadth-first
         
         // WRONT ANSWER
     }
-    
-    // Given an infinite number of quarters (25 cents), dimes (10 cents), nickels (5 cents) and pennies (1 cent), write code
-    // to calculate the number of ways of representing n cents
+
+    public static func run() {
+        exercise7()
+    }
+}
+
+// Given an infinite number of quarters (25 cents), dimes (10 cents), nickels (5 cents) and pennies (1 cent), write code
+// to calculate the number of ways of representing n cents
+public struct Chapter9_Exercise8 : ExerciseRunnable {
+
+    // TODO: Implement!
     func exercise8() {
         // Base cases up to N = 25
         // N = 1...4 : 1
@@ -399,9 +455,17 @@ public class Chapter9 {
         
         // Essentially, top down recursion is hard
     }
-    
-    // Write an algorithm to print all ways of arranging eight queens on a 8x8 chess board so that none of them share the same row, column, or diagonal.
-    // In this case, diagonal means all diagonals, not just the two that bisect the board
+
+    public static func run() {
+
+    }
+}
+
+// Write an algorithm to print all ways of arranging eight queens on a 8x8 chess board so that none of them share the same row, column, or diagonal.
+// In this case, diagonal means all diagonals, not just the two that bisect the board
+public struct Chapter9_Exercise9 : ExerciseRunnable {
+
+    // TODO: Reimplement!
     func strikeOff(board:[[Int]], row: Int, col: Int) -> [[Int]] {
         
         var copy = board
@@ -509,22 +573,11 @@ public class Chapter9 {
         
         // Failed miserably. No idea how to solve these top down ones
     }
+
     
-    // 9.10 and 9.11 are insane!
-    
-    public init() {
+    public static func run() {
         
-        testExercise1(36)
-        //        testExercise1(4)
-        //        testExercise1(5)
-        //        testExercise1(10)
-        //        testExercise1(14)
-        //        testExercise1(20)
-        //        testExercise2()
-        //        testExercise3()
-        //        testExercise4()
-        //        testExercise5()
-        //        testExercise6()
-        //        testExercise9()
     }
 }
+
+// TODO: Implement 9.10 and 9.11!
