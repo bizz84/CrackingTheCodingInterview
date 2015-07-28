@@ -8,8 +8,6 @@
 
 import Foundation
 
-// TODO: Port to new exercise format (see Chapter1, Chapter2)
-
 /*
 Intro
 Worst case & average case can vary wildly.
@@ -19,22 +17,6 @@ Always clarify if tree is binary tree or binary search tree
 Clarify if it's balanced or not
 Full and complete -> Must have 2^n - 1 nodes
 */
-
-class GraphNode<T> {
-    
-    var visited = false
-    var data: T
-    var nodes: [GraphNode<T>]
-    
-    init(data: T) {
-        self.data = data
-        self.nodes = []
-    }
-    init(data: T, nodes: GraphNode<T>...) {
-        self.data = data
-        self.nodes = nodes
-    }
-}
 
 
 class BinaryNode<T> {
@@ -57,69 +39,68 @@ class BinaryNode<T> {
 class Ancestors<T> {
     var ancestor1 : BinaryNode<T>?
     var ancestor2 : BinaryNode<T>?
-    init() {
-        
+}
+
+func postOrder<T>(node : BinaryNode<T>?, operation: (data: T) -> ()) {
+    
+    if let n = node {
+        print("(")
+        postOrder(n.left, operation: operation)
+        postOrder(n.right, operation: operation)
+        print("\(n.data)")
+        operation(data: n.data)
+        print(")")
+    }
+}
+func inOrder<T>(node : BinaryNode<T>?, operation: (data: T) -> ()) {
+    
+    if let n = node {
+        print("(")
+        inOrder(n.left, operation: operation)
+        print("\(n.data)")
+        operation(data: n.data)
+        inOrder(n.right, operation: operation)
+        print(")")
+    }
+}
+func preOrder<T>(node : BinaryNode<T>?, operation: (data: T) -> ()) {
+    
+    if let n = node {
+        print("(")
+        print("\(n.data)")
+        operation(data: n.data)
+        preOrder(n.left, operation: operation)
+        preOrder(n.right, operation: operation)
+        print(")")
     }
 }
 
-
-public class Chapter4 {
+func breadthFirst<T>(node : BinaryNode<T>?) {
     
-    func postOrder<T>(node : BinaryNode<T>?, operation: (data: T) -> ()) {
-        
-        if let n = node {
-            print("(")
-            postOrder(n.left, operation: operation)
-            postOrder(n.right, operation: operation)
-            print("\(n.data)")
-            operation(data: n.data)
-            print(")")
-        }
-    }
-    func inOrder<T>(node : BinaryNode<T>?, operation: (data: T) -> ()) {
-        
-        if let n = node {
-            print("(")
-            inOrder(n.left, operation: operation)
-            print("\(n.data)")
-            operation(data: n.data)
-            inOrder(n.right, operation: operation)
-            print(")")
-        }
-    }
-    func preOrder<T>(node : BinaryNode<T>?, operation: (data: T) -> ()) {
-        
-        if let n = node {
-            print("(")
-            print("\(n.data)")
-            operation(data: n.data)
-            preOrder(n.left, operation: operation)
-            preOrder(n.right, operation: operation)
-            print(")")
-        }
-    }
-    
-    func breadthFirst<T>(node : BinaryNode<T>?) {
-        
-        if let n = node {
-            var nodes : [BinaryNode<T>] = []
-            nodes.append(n)
-            while nodes.count > 0 {
-                let q = nodes.removeAtIndex(0)
-                print("\(q.data), ")
-                if q.left !== nil {
-                    nodes.append(q.left!)
-                }
-                if q.right !== nil {
-                    nodes.append(q.right!)
-                }
+    if let n = node {
+        var nodes : [BinaryNode<T>] = []
+        nodes.append(n)
+        while nodes.count > 0 {
+            let q = nodes.removeAtIndex(0)
+            print("\(q.data), ")
+            if q.left != nil {
+                nodes.append(q.left!)
+            }
+            if q.right != nil {
+                nodes.append(q.right!)
             }
         }
-        print()
     }
-    
-    
-    func balanced<T>(node : BinaryNode<T>?, level: Int, inout min : Int, inout max : Int) {
+    print()
+}
+
+
+
+// Implement a function to check if a binary tree is balanced. For the purposes of this question, a balanced tree is defined to be a tree
+// such that the heights of the subrees of any node never differ by more than one.
+public struct Chapter4_Exercise1 : ExerciseRunnable {
+
+    static func balanced<T>(node : BinaryNode<T>?, level: Int, inout min : Int, inout max : Int) {
         
         if let n = node {
             //print("(")
@@ -138,7 +119,7 @@ public class Chapter4 {
         }
     }
     
-    func isBalanced<T>(node: BinaryNode<T>?) -> Bool {
+    static func isBalanced<T>(node: BinaryNode<T>?) -> Bool {
         
         var min = Int.max
         var max = Int.min
@@ -146,10 +127,9 @@ public class Chapter4 {
         print("min: \(min), max: \(max)")
         return max - min <= 1
     }
+
     
-    // Implement a function to check if a binary tree is balanced. For the purposes of this question, a balanced tree is defined to be a tree
-    // such that the heights of the subrees of any node never differ by more than one.
-    func exercise1() {
+    static func exercise1() {
         
         //        let tree = BinaryNode(data: 0,
         //            left:BinaryNode(data: -10, left:BinaryNode(data: -15), right:BinaryNode(data: -5)),
@@ -167,9 +147,33 @@ public class Chapter4 {
         // Solution on book implements a checkHeight method which returns -1 in some cases
         // My solution should be equivalent
     }
-    
-    
-    func explore<T>(node: GraphNode<T>?, end: GraphNode<T>) -> Bool {
+
+    public static func run() {
+        exercise1()
+    }
+
+}
+
+//Given a directed graph, design an algorithm to find out whether there is a route between two nodes
+public struct Chapter4_Exercise2 : ExerciseRunnable {
+
+    class GraphNode {
+        
+        var visited = false
+        var data: Int
+        var nodes: [GraphNode]
+        
+        init(data: Int) {
+            self.data = data
+            self.nodes = []
+        }
+        init(data: Int, nodes: GraphNode...) {
+            self.data = data
+            self.nodes = nodes
+        }
+    }
+
+    static func explore(node: GraphNode?, end: GraphNode) -> Bool {
         
         if let n = node {
             if n.visited {
@@ -188,13 +192,12 @@ public class Chapter4 {
         return false
     }
     
-    func findRoute<T>(start : GraphNode<T>, end: GraphNode<T>) -> Bool {
+    static func findRoute(start : GraphNode, end: GraphNode) -> Bool {
         
         return explore(start, end: end)
     }
     
-    //Given a directed graph, design an algorithm to find out whether there is a route between two nodes
-    func exercise2() {
+    static func exercise2() {
         
         let node6 = GraphNode(data: 6)
         let node5 = GraphNode(data: 5, nodes: node6)
@@ -218,8 +221,17 @@ public class Chapter4 {
         // Didn't occurr to me to mention that breadth first may be able to find the shortest path
         // as depth first may choose a longer one
     }
-    
-    func buildTree(array: [Int], left: Int, right: Int) -> BinaryNode<Int>? {
+
+    public static func run() {
+        exercise2()
+    }
+}
+
+// Given a sorted (increasing order) array with unique integer elements, write an algorithm to create a
+// binary search tree with minimal height
+public struct Chapter4_Exercise3 : ExerciseRunnable {
+
+    static func buildTree(array: [Int], left: Int, right: Int) -> BinaryNode<Int>? {
         
         if (left <= right) {
             let middle = Int((left + right) / 2)
@@ -231,9 +243,7 @@ public class Chapter4 {
         return nil
     }
     
-    // Given a sorted (increasing order) array with unique integer elements, write an algorithm to create a
-    // binary search tree with minimal height
-    func exercise3() {
+    static func exercise3() {
         let array = [1, 2, 3, 4, 5, 6, 7]
         let tree = buildTree(array, left: 0, right: array.count - 1)
         inOrder(tree, operation: { (data) in })
@@ -241,10 +251,16 @@ public class Chapter4 {
         // Completed in 11 minutes (6 lines of code)
         // Observed that the tree with minimal height is the one that evenly splits the array at each iteration
     }
-    
-    
-    
-    func updateLists(node : BinaryNode<Int>?, level: Int, inout lists : [Node]) {
+    public static func run() {
+        exercise3()
+    }
+}
+
+// Given a binary tree, design an algorithm which creates a linked list of all the nodes at each depth (e.g if you have a
+// tree with depth D, you'll have D Linked lists)
+public struct Chapter4_Exercise4 : ExerciseRunnable {
+
+    static func updateLists(node : BinaryNode<Int>?, level: Int, inout lists : [Node]) {
         
         if let n = node {
             if level == lists.count {
@@ -260,18 +276,16 @@ public class Chapter4 {
         }
     }
     
-    // Given a binary tree, design an algorithm which creates a linked list of all the nodes at each depth (e.g if you have a
-    // tree with depth D, you'll have D Linked lists)
-    func exercise4() {
+    static func exercise4() {
         var lists : [Node] = []
         let tree = BinaryNode(data: 0,
             left:BinaryNode(data: -10, left:BinaryNode(data: -15), right:BinaryNode(data: -5)),
             right:BinaryNode(data: 10, left:BinaryNode(data: 5), right:BinaryNode(data: 15)))
         
         updateLists(tree, level: 0, lists: &lists)
-        let level = 0
+        var level = 0
         for node in lists {
-            print("level \(level) : \(node.asString())")
+            print("level \(level++) : \(node.asString())")
         }
         
         // Completed in 14 minutes
@@ -281,49 +295,55 @@ public class Chapter4 {
         
         // Book also proposes a breadth search solution. Slightly confusing
     }
+    public static func run() {
+        exercise4()
+    }
+}
+
+// Implement a function to check if a binary tree is a binary search tree
+public struct Chapter4_Exercise5 : ExerciseRunnable {
     
-    //    func isBinarySearchTree(node: BinaryNode<Int>?) -> (Bool, Int, Int) {
-    //        if node === nil {
-    //            return (false, 0, 0)
-    //        }
-    //        var min = Int.max
-    //        var max = Int.min
-    //        if node.left !== nil {
-    //            var (leftSearch, minLeft, maxLeft) = isBinarySearchTree(node.left!)
-    //            if maxLeft > node.data {
-    //                return (false, 0, 0)
-    //            }
-    //            min = minLeft
-    //        }
-    //        else {
-    //            min = node.data
-    //        }
-    //        if node.right !== nil {
-    //            var (rightSearch, minRight, maxRight) = isBinarySearchTree(node.right!)
-    //            if minRight < node.data {
-    //                return (false, 0, 0)
-    //            }
-    //            max = maxRight
-    //        }
-    //        else {
-    //            max = node.data
-    //        }
-    //        return (true, min, max)
-    //    }
-    
-    
-    func isBinarySearchTree(node: BinaryNode<Int>) -> (Bool, Int, Int) {
+//    func isBinarySearchTree(node: BinaryNode<Int>?) -> (Bool, Int, Int) {
+//        if node === nil {
+//            return (false, 0, 0)
+//        }
+//        var min = Int.max
+//        var max = Int.min
+//        if node.left !== nil {
+//            var (leftSearch, minLeft, maxLeft) = isBinarySearchTree(node.left!)
+//            if maxLeft > node.data {
+//                return (false, 0, 0)
+//            }
+//            min = minLeft
+//        }
+//        else {
+//            min = node.data
+//        }
+//        if node.right !== nil {
+//            var (rightSearch, minRight, maxRight) = isBinarySearchTree(node.right!)
+//            if minRight < node.data {
+//                return (false, 0, 0)
+//            }
+//            max = maxRight
+//        }
+//        else {
+//            max = node.data
+//        }
+//        return (true, min, max)
+//    }
+
+    static func isBinarySearchTree(node: BinaryNode<Int>) -> (Bool, Int, Int) {
         var min = node.data
         var max = node.data
         var ok = true
-        if node.left !== nil {
+        if node.left != nil {
             let (okLeft, minLeft, maxLeft) = isBinarySearchTree(node.left!)
             if maxLeft > node.data || !okLeft {
                 ok = false
             }
             min = minLeft
         }
-        if node.right !== nil {
+        if node.right != nil {
             let (okRight, minRight, maxRight) = isBinarySearchTree(node.right!)
             if minRight < node.data || !okRight {
                 ok = false
@@ -334,21 +354,20 @@ public class Chapter4 {
         // TODO: Should rewrite to take in min and max as parameters rather than returning them
     }
     
-    func isBinarySearchTreeMinMax(node : BinaryNode<Int>?, min : Int, max: Int) -> Bool {
+    static func isBinarySearchTreeMinMax(node : BinaryNode<Int>?, min : Int, max: Int) -> Bool {
         
-        if node === nil {
-            return true
+        if let node = node {
+            if node.data <= min || node.data > max {
+                return false
+            }
+            let bstLeft = isBinarySearchTreeMinMax(node.left, min : min, max: node.data)
+            let bstRight = isBinarySearchTreeMinMax(node.right, min: node.data, max: max)
+            return bstLeft && bstRight
         }
-        if node!.data <= min || node!.data > max {
-            return false
-        }
-        let bstLeft = isBinarySearchTreeMinMax(node!.left, min : min, max: node!.data)
-        let bstRight = isBinarySearchTreeMinMax(node!.right, min: node!.data, max: max)
-        return bstLeft && bstRight
+        return true
     }
     
-    // Implement a function to check if a binary tree is a binary search tree
-    func exercise5() {
+    static func exercise5() {
         
         let tree = BinaryNode(data: 20,
             left:BinaryNode(data: 10),
@@ -363,11 +382,18 @@ public class Chapter4 {
         // Solution is O(n)
         // Should have explained better on paper
     }
-    
-    
-    func findNextInAncestors(var node : BinaryNode<Int>, value: Int) -> BinaryNode<Int>? {
+    public static func run() {
+        exercise5()
+    }
+}
+
+// Write an algorithm to find the 'next' node (i.e. in order successor) of a given node in a binary search tree.
+// You may assume that each node has a link to its parent.
+public struct Chapter4_Exercise6 : ExerciseRunnable {
+
+    static func findNextInAncestors(var node : BinaryNode<Int>, value: Int) -> BinaryNode<Int>? {
         
-        while node.parent !== nil {
+        while node.parent != nil {
             node = node.parent!
             if node.data > value {
                 return node
@@ -376,27 +402,25 @@ public class Chapter4 {
         return nil
     }
     
-    func findInDescendants(var node : BinaryNode<Int>) -> BinaryNode<Int>? {
-        while node.left !== nil {
+    static func findInDescendants(var node : BinaryNode<Int>) -> BinaryNode<Int>? {
+        while node.left != nil {
             node = node.left!
         }
         return node
     }
     
-    func exercise6(node : BinaryNode<Int>) -> BinaryNode<Int>? {
-        if node.right !== nil {
+    static func exercise6(node : BinaryNode<Int>) -> BinaryNode<Int>? {
+        if node.right != nil {
             // Need to descend
             return findInDescendants(node.right!)
         }
-        if node.parent === nil {
+        if node.parent == nil {
             return nil
         }
         return findNextInAncestors(node.parent!, value : node.data)
     }
     
-    // Write an algorithm to find the 'next' node (i.e. in order successor) of a given node in a binary search tree.
-    // You may assume that each node has a link to its parent.
-    func testExercise6() {
+    static func testExercise6() {
         
         //      let node10 = BinaryNode(data: 10)
         let node3 = BinaryNode(data: 3)
@@ -417,7 +441,7 @@ public class Chapter4 {
         
         let foundNode = exercise6(node5)
         
-        if foundNode !== nil {
+        if foundNode != nil {
             print("next in order: \(foundNode!.data)")
         }
         else {
@@ -434,18 +458,28 @@ public class Chapter4 {
         // Typically I can explain well when I nail it, but need a bit of trial when it's not obvious.
     }
     
-    func ancestor<T>(node: BinaryNode<T>?, node1 : BinaryNode<T>, node2 : BinaryNode<T>, inout ancestors : Ancestors<T>) -> BinaryNode<T>? {
+    public static func run() {
+        testExercise6()
+    }
+}
+
+// Design an algorithm and write the code to find the first common ancestor of two nodes in a binary tree.
+// Avoid storing additional nodes in a data structure.
+// NOTE: This is not necessarily a binary search tree.
+public struct Chapter4_Exercise7 : ExerciseRunnable {
+
+    static func ancestor<T>(node: BinaryNode<T>?, node1 : BinaryNode<T>, node2 : BinaryNode<T>, inout ancestors : Ancestors<T>) -> BinaryNode<T>? {
         
         if let n = node {
-        
+            
             ancestor(n.left, node1: node1, node2: node2, ancestors: &ancestors)
             ancestor(n.right, node1: node1, node2: node2, ancestors: &ancestors)
             
             // Extra conditions to check we actually assign only ancestors
-            if ancestors.ancestor2 !== ancestors.ancestor1 && ancestors.ancestor1 !== nil && (n.left === ancestors.ancestor1 || n.right === ancestors.ancestor1) {
+            if ancestors.ancestor2 !== ancestors.ancestor1 && ancestors.ancestor1 != nil && (n.left === ancestors.ancestor1 || n.right === ancestors.ancestor1) {
                 ancestors.ancestor1 = n
             }
-            if ancestors.ancestor2 !== ancestors.ancestor1 && ancestors.ancestor2 !== nil && (n.left === ancestors.ancestor2 || n.right === ancestors.ancestor2)  {
+            if ancestors.ancestor2 !== ancestors.ancestor1 && ancestors.ancestor2 != nil && (n.left === ancestors.ancestor2 || n.right === ancestors.ancestor2)  {
                 ancestors.ancestor2 = n
             }
             // Discovery step
@@ -455,17 +489,14 @@ public class Chapter4 {
             if n === node2 {
                 ancestors.ancestor2 = node2
             }
-            if ancestors.ancestor1 !== nil && ancestors.ancestor2 !== nil && ancestors.ancestor1 === ancestors.ancestor2 {
+            if ancestors.ancestor1 != nil && ancestors.ancestor2 != nil && ancestors.ancestor1 === ancestors.ancestor2 {
                 return ancestors.ancestor1
             }
         }
         return nil
     }
     
-    // Design an algorithm and write the code to find the first common ancestor of two nodes in a binary tree.
-    // Avoid storing additional nodes in a data structure.
-    // NOTE: This is not necessarily a binary search tree.
-    func exercise7() {
+    static func exercise7() {
         
         //      let node10 = BinaryNode(data: 10)
         let node0 = BinaryNode(data: 0)
@@ -507,12 +538,18 @@ public class Chapter4 {
         
         // Solutions in book were different but not better than mine
     }
+    public static func run() {
+        exercise7()
+    }
+
+}
+
+// You have two very large binary trees: T1, with millions of nodes, and T2, with hundreds of nodes. Create an algorighm to decide if T2 is a subtree of T1.
+// A tree T2 is a subtree of T1 if there exists a node n in T1 such that the subtree of T1 is identical to T2. That is, if you cut off the tree at the node n, the
+// two trees would be identical
+public struct Chapter4_Exercise8 : ExerciseRunnable {
     
-    // You have two very large binary trees: T1, with millions of nodes, and T2, with hundreds of nodes. Create an algorighm to decide if T2 is a subtree of T1.
-    // A tree T2 is a subtree of T1 if there exists a node n in T1 such that the subtree of T1 is identical to T2. That is, if you cut off the tree at the node n, the
-    // two trees would be identical
-    
-    func identical(node1 : BinaryNode<Int>?, node2 : BinaryNode<Int>?) -> Bool {
+    static func identical(node1 : BinaryNode<Int>?, node2 : BinaryNode<Int>?) -> Bool {
         
         if node1 === nil && node2 === nil {
             return true
@@ -531,7 +568,7 @@ public class Chapter4 {
         return left && right
     }
     
-    func findSubtree(tree: BinaryNode<Int>?, subtree : BinaryNode<Int>) -> Bool {
+    static func findSubtree(tree: BinaryNode<Int>?, subtree : BinaryNode<Int>) -> Bool {
         
         if tree === nil {
             return false
@@ -548,7 +585,7 @@ public class Chapter4 {
         return false
     }
     
-    func exercise8() {
+    static func exercise8() {
         
         let node0 = BinaryNode(data: 0)
         let node1 = BinaryNode(data: 1)
@@ -585,8 +622,18 @@ public class Chapter4 {
         
         // This problem had a very interesting complexity analysis which I should review
     }
+
+    public static func run() {
+        exercise8()
+    }
+
+}
+
+// You are given a binary tree in which each node contains a value. Design an algorithm to print all paths which sum to a given value. The path
+// does not need to start or end at the root or a leaf, but it must go in a straight line down
+public struct Chapter4_Exercise9 : ExerciseRunnable {
     
-    func printSubPath(node : BinaryNode<Int>, sum : Int) {
+    static func printSubPath(node : BinaryNode<Int>, sum : Int) {
         if node.data > sum {
             return
         }
@@ -624,10 +671,9 @@ public class Chapter4 {
                 break
             }
         }
-        return
     }
     
-    func subPathLeft(var node : BinaryNode<Int>, sum : Int) -> String? {
+    static func subPathLeft(var node : BinaryNode<Int>, sum : Int) -> String? {
         if node.data > sum {
             return nil
         }
@@ -650,7 +696,7 @@ public class Chapter4 {
         }
         return nil
     }
-    func subPathRight(var node : BinaryNode<Int>, sum : Int) -> String? {
+    static func subPathRight(var node : BinaryNode<Int>, sum : Int) -> String? {
         if node.data > sum {
             return nil
         }
@@ -674,7 +720,7 @@ public class Chapter4 {
         return nil
     }
     
-    func printPaths(node : BinaryNode<Int>?, sum: Int) {
+    static func printPaths(node : BinaryNode<Int>?, sum: Int) {
         
         if let n = node {
             printSubPath(n, sum: sum)
@@ -692,9 +738,7 @@ public class Chapter4 {
         }
     }
     
-    // You are given a binary tree in which each node contains a value. Design an algorithm to print all paths which sum to a given value. The path
-    // does not need to start or end at the root or a leaf, but it must go in a straight line down
-    func exercise9() {
+    static func exercise9() {
         
         let tree = BinaryNode(data: 1,
             left:BinaryNode(data: 4, left:BinaryNode(data: 3), right:BinaryNode(data: 2, left: BinaryNode(data: 5), right: BinaryNode(data: 7))),
@@ -710,27 +754,17 @@ public class Chapter4 {
         // If all numbers can be positive or negative, can have multiple paths starting at same node which complicates the solution
         // Read up!
     }
+
+    public static func run() {
+        exercise9()
+    }
     
-    public init() {
-        
+}
+
 //        let tree = BinaryNode(data: 0,
 //            left:BinaryNode(data: -10, left:BinaryNode(data: -15), right:BinaryNode(data: -5)),
 //            right:BinaryNode(data: 10, left:BinaryNode(data: 5), right:BinaryNode(data: 22)))
-        
-        
         //        preOrder(tree, { (data) in })
         //        print()
         //        inOrder(tree, { (data) in  })
         //        postOrder(tree, { (data) in  })
-        //        exercise1()
-        //        exercise2()
-        //        exercise3()
-        //        exercise4()
-        //exercise5()
-        //        testExercise6()
-        //        exercise7()
-        //        exercise8()
-        //        exercise9()
-    }
-    
-}
