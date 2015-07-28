@@ -68,4 +68,13 @@
 // Chapter 10
 //Chapter10_Words.run()
 
+// Chapter 11
+//Chapter11_Exercise1.run()
+//Chapter11_Exercise2.run()
+//Chapter11_Exercise3.run()
+//Chapter11_Exercise5.run()
+//Chapter11_Exercise6.run() // Wrong solution
+//Chapter11_Exercise7.run()
+//Chapter11_Exercise8.run()
+
 

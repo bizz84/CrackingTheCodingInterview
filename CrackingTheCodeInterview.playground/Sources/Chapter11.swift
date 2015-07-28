@@ -8,89 +8,78 @@
 
 import Foundation
 
-// TODO: Port to new exercise format (see Chapter1, Chapter2)
 
-//extension Array {
-//    func toString() -> String{
-//        var str : String = ""
-//        for (idx, item) in enumerate(self) {
-//            str += "\(item)"
-//        }
-//        return str
-//    }
-//}
+// Sorting algorithms
+func bubbleSort(inout array: [Int]) {
+    
+    for var i = 0; i < array.count - 1; i++ {
+        for var j = i + 1; j < array.count; j++ {
+            if array[i] > array[j] {
+                swap(&array[i], &array[j])
+            }
+        }
+    }
+}
 
-public class Chapter11 {
+func selectionSort(inout array : [Int]) {
     
-    
-    func bubbleSort(inout array: [Int]) {
-        
-        for var i = 0; i < array.count - 1; i++ {
-            for var j = i + 1; j < array.count; j++ {
-                if array[i] > array[j] {
-                    swap(&array[i], &array[j])
-                }
+    for var i = 0; i < array.count; i++ {
+        //let first = array[i]
+        var argMin = i
+        for var j = i + 1; j < array.count; j++ {
+            if array[j] < array[argMin] {
+                argMin = j
             }
+        }
+        if argMin != i {
+            swap(&array[i], &array[argMin])
         }
     }
+}
+
+func mergeSort(inout array : [Int], inout helper : [Int], from: Int, to: Int) {
     
-    func selectionSort(inout array : [Int]) {
-        
-        for var i = 0; i < array.count; i++ {
-            //let first = array[i]
-            var argMin = i
-            for var j = i + 1; j < array.count; j++ {
-                if array[j] < array[argMin] {
-                    argMin = j
-                }
-            }
-            if argMin != i {
-                swap(&array[i], &array[argMin])
-            }
-        }
+    if from < to {
+        let middle = (from + to) / 2
+        mergeSort(&array, helper: &helper, from: from, to: middle)
+        mergeSort(&array, helper: &helper, from: middle + 1, to: to)
+        merge(&array, helper: &helper, low: from, middle: middle, high: to)
     }
     
-    func mergeSort(inout array : [Int], inout helper : [Int], from: Int, to: Int) {
-        
-        if from < to {
-            let middle = (from + to) / 2
-            mergeSort(&array, helper: &helper, from: from, to: middle)
-            mergeSort(&array, helper: &helper, from: middle + 1, to: to)
-            merge(&array, helper: &helper, low: from, middle: middle, high: to)
-        }
-        
-        // TODO: Merge from, to
+    // TODO: Merge from, to
+}
+
+func merge(inout array: [Int], inout helper: [Int], low: Int, middle: Int, high: Int) {
+    for var i = low; i <= high; i++ {
+        helper[i] = array[i]
     }
     
-    func merge(inout array: [Int], inout helper: [Int], low: Int, middle: Int, high: Int) {
-        for var i = low; i <= high; i++ {
-            helper[i] = array[i]
+    var helperLeft = low
+    var helperRight = middle + 1
+    var current = low
+    
+    while helperLeft <= middle && helperRight <= high {
+        if helper[helperLeft] <= helper[helperRight] {
+            array[current] = helper[helperLeft]
+            helperLeft++
         }
-        
-        var helperLeft = low
-        var helperRight = middle + 1
-        var current = low
-        
-        while helperLeft <= middle && helperRight <= high {
-            if helper[helperLeft] <= helper[helperRight] {
-                array[current] = helper[helperLeft]
-                helperLeft++
-            }
-            else {
-                array[current] = helper[helperRight]
-                helperRight++
-            }
-            current++
+        else {
+            array[current] = helper[helperRight]
+            helperRight++
         }
-        
-        let remaining = middle - helperLeft
-        for var i = 0; i <= remaining; i++ {
-            array[current + i] = helper[helperLeft + i]
-        }
+        current++
     }
     
-    // You are given two sorted arrays, A and B, where A has a large enough buffer at the end to hold B. Write a method to merge B into A in sorted order.
-    func exercise1(inout a: [Int], b: [Int]) {
+    let remaining = middle - helperLeft
+    for var i = 0; i <= remaining; i++ {
+        array[current + i] = helper[helperLeft + i]
+    }
+}
+
+// You are given two sorted arrays, A and B, where A has a large enough buffer at the end to hold B. Write a method to merge B into A in sorted order.
+public struct Chapter11_Exercise1 : ExerciseRunnable {
+
+    static func exercise1(inout a: [Int], b: [Int]) {
         
         var rightA = a.count - b.count - 1
         var rightB = b.count - 1
@@ -110,7 +99,7 @@ public class Chapter11 {
     }
     
     
-    func testExercise1() {
+    static func testExercise1() {
         var a = [1, 2, 6, 9, 12, 0, 0, 0]
         let b = [3, 7, 15]
         
@@ -119,8 +108,17 @@ public class Chapter11 {
         print("\(a)")
         // Solved in 4.30 min
     }
-    
-    func hashTable(s : String) -> [Character : Int] {
+
+    public static func run() {
+        testExercise1()
+    }
+
+}
+
+// Write a method to sort an array of strings so that all the anagrams are next to each other
+public struct Chapter11_Exercise2 : ExerciseRunnable {
+
+    static func hashTable(s : String) -> [Character : Int] {
         
         var table: [Character : Int] = [ : ]
         for character in s.characters {
@@ -134,18 +132,13 @@ public class Chapter11 {
         return table
     }
     
-    // Write a method to sort an array of strings so that all the anagrams are next to each other
-    // Group
-    //
-    
-    func sortedCharacters(s: String) -> String {
+    static func sortedCharacters(s: String) -> String {
         
         var a = Array(s.characters)
         a.sortInPlace { $1.unicodeScalarCodePoint() > $0.unicodeScalarCodePoint() }
         return String(a)
-//        return a.toString()
     }
-    func exercise2(strings : [String]) -> [String] {
+    static func exercise2(strings : [String]) -> [String] {
         
         var hash : [String : [String]] = [ : ]
         
@@ -167,20 +160,27 @@ public class Chapter11 {
         return result
     }
     
-    func testExercise2() {
+    static func testExercise2() {
         let strings = ["abba", "baba", "acca", "abab", "caca"]
         let sorted = exercise2(strings)
         print("\(sorted)")
         // Failed. Best solution:
         // Put sorted representation of strings in hashTable where each key is the sorted string, then unload hasttable into array.
     }
-    
-    // Given a sorted array of n integers that has been rotated an unknown number of times, write code to find an element in the array. You may assume that the array was
-    // originally sorted in increasing order.
-    // EXAMPLE
-    // Input: find 5 in {15, 16, 19, 20, 25, 1, 3, 4, 5, 7, 10, 14 }
-    // Output: 8 (the index of 5 in the array)
-    func exercise3(a : [Int], findMe: Int) -> Int {
+
+    public static func run() {
+        testExercise2()
+    }
+}
+
+// Given a sorted array of n integers that has been rotated an unknown number of times, write code to find an element in the array. You may assume that the array was
+// originally sorted in increasing order.
+// EXAMPLE
+// Input: find 5 in {15, 16, 19, 20, 25, 1, 3, 4, 5, 7, 10, 14 }
+// Output: 8 (the index of 5 in the array)
+public struct Chapter11_Exercise3 : ExerciseRunnable {
+
+    static func exercise3(a : [Int], findMe: Int) -> Int {
         
         var left = 0
         var right = a.count - 1
@@ -200,23 +200,29 @@ public class Chapter11 {
         return -1
     }
     
-    func testExercise3() {
+    static func testExercise3() {
         let a = [15, 16, 19, 20, 25, 1, 3, 4, 5, 7, 10, 14]
         let index = exercise3(a, findMe: 15)
         print("\(a), index: \(index)")
         // Solved in 14 minutes as variation of binary search
         // Not considering duplicates. May be wrong
     }
-    
-    // Imagine you have a 20GB file with one string per line. Explain how you would sort the file
-    
-    // External sort, completed in 6 min
-    
-    // Given a sorted array of strings which is interspersed with empty strings, write a method to find the locations of a given string
-    // EXAMPLE
-    // Input: Find "Ball" in { "at", "", "", "", "ball", "", "", "car", "", "", "dad", "", ""}
-    // Output: 4
-    func exercise5(a : [String], findMe: String) -> Int {
+    public static func run() {
+        testExercise3()
+    }
+}
+
+// 11.4: Imagine you have a 20GB file with one string per line. Explain how you would sort the file
+// External sort, completed in 6 min
+
+
+// Given a sorted array of strings which is interspersed with empty strings, write a method to find the locations of a given string
+// EXAMPLE
+// Input: Find "Ball" in { "at", "", "", "", "ball", "", "", "car", "", "", "dad", "", ""}
+// Output: 4
+public struct Chapter11_Exercise5 : ExerciseRunnable {
+
+    static func exercise5(a : [String], findMe: String) -> Int {
         
         var left = 0
         var right = a.count - 1
@@ -264,7 +270,7 @@ public class Chapter11 {
         return -1
     }
     
-    func testExercise5() {
+    static func testExercise5() {
         
         let strings = [ "at", "", "", "", "ball", "", "", "car", "", "", "dad", "", ""]
         let index = exercise5(strings, findMe: "dad")
@@ -276,9 +282,17 @@ public class Chapter11 {
         // Analysed cases
         // Forgot to mention what we should do if string to be found is empty
     }
-    
-    // Given an N x N matrix in which each row and each column is sorted in ascending order, write a method to find an element.
-    func lineBinarySearch(M : [[Int]], findMe: Int, dimension: Int, var first: Int, var last: Int, picker: (M: [[Int]], middle: Int, dimension: Int) -> Int) -> Int {
+
+    public static func run() {
+        testExercise5()
+    }
+
+}
+
+// Given an N x N matrix in which each row and each column is sorted in ascending order, write a method to find an element.
+public struct Chapter11_Exercise6 : ExerciseRunnable {
+
+    static func lineBinarySearch(M : [[Int]], findMe: Int, dimension: Int, var first: Int, var last: Int, picker: (M: [[Int]], middle: Int, dimension: Int) -> Int) -> Int {
         
         while first <= last {
             let middle = (first + last) / 2
@@ -296,14 +310,14 @@ public class Chapter11 {
         return -1
     }
     
-    func rowBinarySearch(M : [[Int]], findMe: Int, col: Int, firstRow: Int, lastRow: Int) -> Int {
+    static func rowBinarySearch(M : [[Int]], findMe: Int, col: Int, firstRow: Int, lastRow: Int) -> Int {
         
         return lineBinarySearch(M, findMe: findMe, dimension: col, first: firstRow, last: lastRow, picker: { (M : [[Int]], middle: Int, dimension: Int) in
             return M[middle][dimension]
         })
     }
     
-    func colBinarySearch(M : [[Int]], findMe: Int, row: Int, firstCol: Int, lastCol: Int) -> Int {
+    static func colBinarySearch(M : [[Int]], findMe: Int, row: Int, firstCol: Int, lastCol: Int) -> Int {
         
         return lineBinarySearch(M, findMe: findMe, dimension: row, first: firstCol, last: lastCol, picker: { (M : [[Int]], middle: Int, dimension: Int) in
             return M[dimension][middle]
@@ -311,7 +325,7 @@ public class Chapter11 {
     }
     
     
-    func exercise6(M : [[Int]], findMe: Int) -> (Int, Int) {
+    static func exercise6(M : [[Int]], findMe: Int) -> (Int, Int) {
         
         /*
         5  10 15 25 30
@@ -370,7 +384,7 @@ public class Chapter11 {
         return (-1, -1)
     }
     
-    func testExercise6() {
+    static func testExercise6() {
         
         let m : [[Int]] = [
             [5, 10, 15, 25, 30],
@@ -395,13 +409,21 @@ public class Chapter11 {
         // Wrong solution
     }
     
-    // A circus is designing a tower routine consisting of people standing atop one another's shoulders. For practical and aesthetic reasons,
-    // each person must be both shorter and lighter than the person below him or her. Given the heights and weights of each person in the circus,
-    // write a method to compute the largest possible number of people in such a tower.
-    // EXAMPLE
-    // Input (ht, wt): (65, 100), (70, 150), (56, 90), (75, 190), (60, 95), (68, 110)
-    // Output: The longest tower is length 6 and includes from top to bottom:
-    // (56, 90), (60, 95), (65, 100), (68, 110), (70, 150), (75, 190)
+    public static func run() {
+        testExercise6()
+    }
+
+
+}
+
+// A circus is designing a tower routine consisting of people standing atop one another's shoulders. For practical and aesthetic reasons,
+// each person must be both shorter and lighter than the person below him or her. Given the heights and weights of each person in the circus,
+// write a method to compute the largest possible number of people in such a tower.
+// EXAMPLE
+// Input (ht, wt): (65, 100), (70, 150), (56, 90), (75, 190), (60, 95), (68, 110)
+// Output: The longest tower is length 6 and includes from top to bottom:
+// (56, 90), (60, 95), (65, 100), (68, 110), (70, 150), (75, 190)
+public struct Chapter11_Exercise7 : ExerciseRunnable {
     
     struct Person : CustomStringConvertible {
         let height : Int
@@ -414,7 +436,7 @@ public class Chapter11 {
             return "(\(height),\(weight))"
         }
     }
-    func longestIncreasingSequence(people: [Person], picker: (Person) -> Int) -> Int {
+    static func longestIncreasingSequence(people: [Person], picker: (Person) -> Int) -> Int {
         var max = 1
         var currentMax = 1
         for var i = 1; i < people.count; i++ {
@@ -434,7 +456,7 @@ public class Chapter11 {
         return max
     }
     
-    func exercise7(people: [Person]) -> Int {
+    static func exercise7(people: [Person]) -> Int {
         // Sort by height -> find longest ordered sequence of weights
         // Sort by weight -> find longest ordered sequence of heights
         // Return the greater of the two
@@ -455,7 +477,7 @@ public class Chapter11 {
         }
     }
     
-    func testExercise7() {
+    static func testExercise7() {
         
         let people = [
             Person(height: 65, weight: 100),
@@ -472,15 +494,22 @@ public class Chapter11 {
         
         // Book uses Longest increasing subsequence to compute solution
     }
+
     
-    // Imagine you are reading a stream of integers. Periodically, you wish to be able to look up the rank of a number x (the number of values less than or equal to x).
-    // Implement the data structures and algorithms to support these operations. That is, implement the method track(int x) which is called when each number is generated,
-    // and the method getRankOfNumber(int x), which returns the number of values less than or equal to x (not including x itsefl).
-    // EXAMPLE
-    // Stream (in order of appearance): 5, 1, 4, 4, 5, 9, 7, 13, 3
-    // getRankOfNumber(1) = 0
-    // getRankOfNumber(3) = 1
-    // getRankOfNumber(4) = 2
+    public static func run() {
+        testExercise7()
+    }
+}
+
+// Imagine you are reading a stream of integers. Periodically, you wish to be able to look up the rank of a number x (the number of values less than or equal to x).
+// Implement the data structures and algorithms to support these operations. That is, implement the method track(int x) which is called when each number is generated,
+// and the method getRankOfNumber(int x), which returns the number of values less than or equal to x (not including x itself).
+// EXAMPLE
+// Stream (in order of appearance): 5, 1, 4, 4, 5, 9, 7, 13, 3
+// getRankOfNumber(1) = 0
+// getRankOfNumber(3) = 1
+// getRankOfNumber(4) = 2
+public struct Chapter11_Exercise8 : ExerciseRunnable {
     
     class Stream {
         
@@ -524,8 +553,7 @@ public class Chapter11 {
         }
     }
     
-    
-    func testExercise8() {
+    static func testExercise8() {
         
         let stream = Stream()
         stream.track(5)
@@ -547,17 +575,9 @@ public class Chapter11 {
         // Proposed solution was to use a binary search tree which can solve the problem in O(log N)
         // Clever counting of rank for each node so that full trasversal is not needed
     }
-    
-    
-    public init() {
-        
-        //        testExercise1()
-        //        testExercise2()
-        //        testExercise3()
-        //        testExercise4()
-        //        testExercise6()
-        //        testExercise6()
-        //        testExercise7()
+
+    public static func run() {
         testExercise8()
     }
+
 }
