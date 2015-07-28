@@ -8,19 +8,10 @@
 
 import Foundation
 
-// TODO: Port to new exercise format (see Chapter1, Chapter2)
-
-public class Chapter10 {
+// Find all documents that contain a list of words
+public struct Chapter10_Words : ExerciseRunnable {
     
-    // Find all documents that contain a list of words
-    func words() {
-        
-        // 1: Create hash table of all words:
-        // "books" : doc2, doc3, doc6, doc8
-        // "many"  : doc1, doc3, doc7, doc8, doc9
-    }
-    
-    func intersection(set1 : [String], set2: [String]) -> [String] {
+    static func intersection(set1 : [String], set2: [String]) -> [String] {
         
         // Idea: sort 2 sets, then scan and discard non uniques
         var sorted1 = set1.sort { $0 < $1 }
@@ -49,7 +40,7 @@ public class Chapter10 {
         return intersection
     }
     
-    public init() {
+    public static func run() {
         
         let intersect = intersection([ "doc2", "doc3", "doc6", "doc8"], set2: [ "doc1", "doc3", "doc7", "doc8", "doc9"])
         print("\(intersect)")

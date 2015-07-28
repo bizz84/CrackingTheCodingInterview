@@ -8,8 +8,6 @@
 
 import Foundation
 
-// TODO: Port to new exercise format (see Chapter1, Chapter2)
-
 // 7.1 You have a basketball hoop and someone says you can play one of two games
 // Game1: You get one shot to make the hoop
 // Game2: You get three shots and you have to make 2 of 3 shots
