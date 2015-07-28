@@ -8,13 +8,10 @@
 
 import Foundation
 
-// TODO: Port to new exercise format (see Chapter1, Chapter2)
-
 public class Chapter8 {
     
     
-    // Design the data structures for a generic deck of cards. Explain how you would subclass the data structures to implement blackjack.
-    
+    // Design the data structures for a generic deck of cards. Explain how you would subclass the data structures to implement blackjack.    
     class Card {
         
         enum Color {
@@ -74,10 +71,6 @@ public class Chapter8 {
                 }
             }
         }
-        
-        //        enum BlackJackValue : Rank {
-        //
-        //        }
         
         
         let suit : Suit

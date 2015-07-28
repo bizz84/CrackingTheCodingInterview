@@ -49,6 +49,11 @@
 //Chapter5_Exercise7.run()
 //Chapter5_Exercise8.run()
 
+// Chapter 7
+//Chapter7_MultiplySubtractDivide.run()
+//Chapter7_Exercise3.run()
+//Chapter7_Squares.run()
+
 //Chapter7()
 //Chapter9()
 //Chapter10()
