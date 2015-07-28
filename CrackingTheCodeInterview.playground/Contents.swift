@@ -39,7 +39,16 @@
 //Chapter4_Exercise8.run()
 //Chapter4_Exercise9.run()
 
-//Chapter5()
+// Chapter 5
+//Chapter5_Exercise1.run()
+//Chapter5_Exercise2.run()
+//Chapter5_Exercise3.run()
+//Chapter5_Exercise4.run()
+//Chapter5_Exercise5.run()
+//Chapter5_Exercise6.run()
+//Chapter5_Exercise7.run()
+//Chapter5_Exercise8.run()
+
 //Chapter7()
 //Chapter9()
 //Chapter10()

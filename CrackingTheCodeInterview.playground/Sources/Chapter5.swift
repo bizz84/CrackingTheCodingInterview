@@ -8,8 +8,6 @@
 
 import Foundation
 
-// TODO: Port to new exercise format (see Chapter1, Chapter2)
-
 struct NSStringBinary {
     
     static func binaryStringFromInt(intValue: Int32) -> NSString {
@@ -34,12 +32,12 @@ struct NSStringBinary {
     }
 }
 
-public class Chapter5 {
-    
-    // You are given two 32-bit numbers, N and M, and two positions, i and j. Write a method to insert M into N such that M starts at bit j and ends at bit i.
-    // You can assume that the bits j through i have enough space to fit all of M. That is, if M = 10011, you can assume that there are at least 5 bits between
-    // j and i. You would not, for example, have j = 3 and i = 2 because M could not fully fit between bit 3 and bit 2
-    func exercise1(N : Int32, M: Int32, i: Int32, j: Int32) -> Int32 {
+// You are given two 32-bit numbers, N and M, and two positions, i and j. Write a method to insert M into N such that M starts at bit j and ends at bit i.
+// You can assume that the bits j through i have enough space to fit all of M. That is, if M = 10011, you can assume that there are at least 5 bits between
+// j and i. You would not, for example, have j = 3 and i = 2 because M could not fully fit between bit 3 and bit 2
+public struct Chapter5_Exercise1 : ExerciseRunnable {
+
+    static func exercise1(N : Int32, M: Int32, i: Int32, j: Int32) -> Int32 {
         // example
         print("i: \(i), j: \(j)")
         print("N: \(NSStringBinary.binaryStringFromInt(N))")
@@ -55,7 +53,7 @@ public class Chapter5 {
         return MinN
     }
     
-    func testExercise1() {
+    static func testExercise1() {
         
         exercise1(0b11100001, M: 0b00000110, i: 1, j: 4)
         exercise1(0b11100001, M: 0b00000110, i: 0, j: 6)
@@ -68,9 +66,17 @@ public class Chapter5 {
         // Shift masked M, OR with result
     }
     
-    // Given a real number between 0 and 1 (e.g. 0.72) that is passed in as a double,
-    // print the binary representation. If the number cannot be represented accurately in binary with at most 32 characters, print "ERROR".
-    func exercise2(var n : Double) -> String {
+    public static func run() {
+        testExercise1()
+    }
+
+}
+
+// Given a real number between 0 and 1 (e.g. 0.72) that is passed in as a double,
+// print the binary representation. If the number cannot be represented accurately in binary with at most 32 characters, print "ERROR".
+public struct Chapter5_Exercise2 : ExerciseRunnable {
+
+    static func exercise2(var n : Double) -> String {
         
         if n < 0 || n > 1 {
             return "ERROR"
@@ -98,7 +104,7 @@ public class Chapter5 {
         return s
     }
     
-    func testExercise2() {
+    static func testExercise2() {
         var n = 0.875
         var s = exercise2(n)
         print("\(n) -> \(s)")
@@ -122,9 +128,16 @@ public class Chapter5 {
         // the topmost bit to the string.
         // Was working but could have made more efficient (no need to compare double with int)
     }
-    
-    // Given a positive integer, print the next smallest and next largest number that have the same number of 1 bits in their binary representation
-    func printNextSmallest(n : Int) -> Int {
+    public static func run() {
+        testExercise2()
+    }
+
+}
+
+// Given a positive integer, print the next smallest and next largest number that have the same number of 1 bits in their binary representation
+public struct Chapter5_Exercise3 : ExerciseRunnable {
+
+    static func printNextSmallest(n : Int) -> Int {
         if n == 0 {
             return -1
         }
@@ -144,7 +157,7 @@ public class Chapter5 {
         let updated = reset1 | nextPowerOfTwo
         return updated
     }
-    func printNextLargerst(n : Int32) -> Int32 {
+    static func printNextLargerst(n : Int32) -> Int32 {
         if n == 0 {
             return -1
         }
@@ -162,7 +175,7 @@ public class Chapter5 {
         let updated = reset1 | nextPowerOfTwo
         return updated
     }
-    func exercise3() {
+    static func exercise3() {
         //        print("n: \(NSStringBinary.binaryStringFromInt(0)), nextSmallest: \(NSStringBinary.binaryStringFromInt(printNextLargerst(0)))")
         //        print("n: \(NSStringBinary.binaryStringFromInt(1)), nextSmallest: \(NSStringBinary.binaryStringFromInt(printNextLargerst(1)))")
         print("n: \(NSStringBinary.binaryStringFromInt(2)), nextSmallest: \(NSStringBinary.binaryStringFromInt(printNextLargerst(2)))")
@@ -184,14 +197,25 @@ public class Chapter5 {
         
         // WRONG, approach needed more consideration: Find first non-trailing 0, put a 1, move all the other ones
     }
-    
-    // Explain what the following code does: ((n & (n - 1) == 0)
-    func exercise4() {
-        // Checks if N is a power of 2
+
+    public static func run() {
+        exercise3()
     }
-    
-    // Write a function to determine the number of bits you would need to flip to convert integer A to integer B
-    func exercise5(a: Int32, b: Int32) -> Int32 {
+}
+
+// Explain what the following code does: ((n & (n - 1) == 0)
+public struct Chapter5_Exercise4 : ExerciseRunnable {
+
+    public static func run() {
+        print("Q: Explain what the following code does: ((n & (n - 1) == 0)")
+        print("A: Checks if N is a power of 2")
+    }
+}
+
+// Write a function to determine the number of bits you would need to flip to convert integer A to integer B
+public struct Chapter5_Exercise5 : ExerciseRunnable {
+
+    static func exercise5(a: Int32, b: Int32) -> Int32 {
         
         if a == b {
             return 0
@@ -208,7 +232,7 @@ public class Chapter5 {
         return flip
     }
     
-    func testExercise5() {
+    static func testExercise5() {
         
         exercise5(1, b: 2)
         exercise5(1, b: 3)
@@ -222,9 +246,15 @@ public class Chapter5 {
         //  count++
         // }
     }
-    
-    // Write a program to swap odd and even bits in an integer with as fwe instructions as possible (e.g. bit 0 and bit 1 are swapped, bit 2 and bit 3 are swapped, and so on)
-    func exercise6(a: Int32) -> Int32 {
+    public static func run() {
+        testExercise5()
+    }
+}
+
+// Write a program to swap odd and even bits in an integer with as fwe instructions as possible (e.g. bit 0 and bit 1 are swapped, bit 2 and bit 3 are swapped, and so on)
+public struct Chapter5_Exercise6 : ExerciseRunnable {
+
+    static func exercise6(a: Int32) -> Int32 {
         // Mask can be precomputed : 0b0101010101010101010101010101
         var oddMask : Int32 = 1; //
         for var i = 0; i < 32; i += 2 {
@@ -235,16 +265,25 @@ public class Chapter5 {
         print("a: \(NSStringBinary.binaryStringFromInt(a))\nb: \(NSStringBinary.binaryStringFromInt(result))")
         return result
     }
-    func testExercise6() {
+    static func testExercise6() {
         exercise6(0b010101101111000010000111)
         // Solved in 23 minutes
         // Odd/even + shifting masking approach works, however need quick way of calculating odd, even
     }
-    
-    // An array A contains all the integers from 0 to n, except for one number which is missing. In this problem, we cannot access an entire integer in A with a single operation.
-    // The elements of A are represented in binary, and the only operation we can use to access them is "fetch the jth bit of A[i]", which takes constant time.
-    // Write code to find the missing integer. Can you do it in O(n) time?
-    func exercise7() {
+
+    public static func run() {
+        testExercise6()
+    }
+
+}
+
+// An array A contains all the integers from 0 to n, except for one number which is missing. In this problem, we cannot access an entire integer in A with a single operation.
+// The elements of A are represented in binary, and the only operation we can use to access them is "fetch the jth bit of A[i]", which takes constant time.
+// Write code to find the missing integer. Can you do it in O(n) time?
+public struct Chapter5_Exercise7 : ExerciseRunnable {
+
+    // TODO: Implement me!
+    public static func run() {
         
         // Could not find solution in 20 minutes.
         // Idea: Count number of 0s on each bit, subtract expected number of 0s, and negate
@@ -252,8 +291,16 @@ public class Chapter5 {
         // Approach: Count imbalances between 0s and 1s and discard half the array by bit 0, repeat for following bits
         // Complexity = sum(0, n, logn, n / 2^i) = 2n-1
     }
-    
-    func stringForByte(byte : UInt8) -> String {
+
+}
+
+// A monochrome screen is stored as a single array of bytes, allowing eight consecutive pixels to be stored in one byte.
+// The screen has width w, where w is divisible by 8 (that is, no byte will be split across rows). The height of the screen, of course,
+// can be derived from the length of the array and the width. Implement a function
+// drawHorizontalLine(byte[] screen, int width, int x1, int x2, int y) which draws a horizontal line from (x1, y) to (x2, y).
+public struct Chapter5_Exercise8 : ExerciseRunnable {
+
+    static func stringForByte(byte : UInt8) -> String {
         
         var s = ""
         for i in 0...7 {
@@ -262,11 +309,7 @@ public class Chapter5 {
         return s
     }
     
-    // A monochrome screen is stored as a single array of bytes, allowing eight consecutive pixels to be stored in one byte.
-    // The screen has width w, where w is divisible by 8 (that is, no byte will be split across rows). The height of the screen, of course,
-    // can be derived from the length of the array and the width. Implement a function
-    // drawHorizontalLine(byte[] screen, int width, int x1, int x2, int y) which draws a horizontal line from (x1, y) to (x2, y).
-    func exercise8(inout A : [UInt8], w: Int, x1: Int, x2: Int, y: Int) {
+    static func exercise8(inout A : [UInt8], w: Int, x1: Int, x2: Int, y: Int) {
         
         if x2 >= x1 {
             let bytesInRow = w / 8;
@@ -297,7 +340,7 @@ public class Chapter5 {
         }
         
     }
-    func testExercise8() {
+    static func testExercise8() {
         var A : [UInt8] = Array(count: 16, repeatedValue: 0)
         exercise8(&A, w: 64, x1: 9, x2: 64, y: 0)
         
@@ -306,12 +349,8 @@ public class Chapter5 {
         // Correct and efficient solution, forgot to check case where x1, x2 on same byte!
         // 5 more minutes for corner cases
     }
-    public init() {
-        testExercise1()
-        //testExercise2()
-        //        exercise3()
-        //        testExercise5()
-        //        testExercise6()
-        //testExercise8()
+
+    public static func run() {
+        testExercise8()
     }
 }
