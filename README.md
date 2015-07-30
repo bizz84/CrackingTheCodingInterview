@@ -18,9 +18,10 @@ This work is intended as a reference on how to solve typical coding exercises th
 ## Some background
 
 **Hash Tables (Dictionary)** 
-- Count occurrences of characters/strings in sets. Useful to check for uniqueness/ remove duplicates (no second pass required)
-Linked Lists
-- Runner technique (use two pointers, one can move faster or be k steps ahead…). Useful to detect loops,
+- Count occurrences of characters/strings in sets. Useful to check for uniqueness / remove duplicates (no second pass required)
+
+**Linked Lists**
+- Runner technique (use two pointers, one can move faster or be k steps ahead...). Useful to detect loops,
 - Note: Removal of one node can be done in O(1)
 - Can partition linked lists by manipulation of nodes/data
 - Can implement addition of two linked lists of digits. Careful with exit conditions
@@ -40,7 +41,9 @@ Linked Lists
 - Assumptions (binary vs binary search tree, balanced vs unbalanced, full & complete)
 - Tries ??
 - DFS, BFS
+
 Questions
+
 - Check if binary tree is balanced: scans whole tree passing min and max depth as inout parameters
 - Shortest path between two nodes in graph? Use BFS, keeping track of nodes already visited.
 - Create binary search tree of minimal height out of sorted array: binary search with method to create a subtree out of [left, right] subarray
